@@ -1,0 +1,124 @@
+Level design/narrative
+
+The player starts in a white room with a bright red door.
+Going through the door takes the character to a long hallway (memory lane)
+Memory lane is like the level-select area of the game; each level ends when the player reaches the bright red door and returns to memory lane.
+
+Each “level entrance” is an inset box that has an image of the level in a frame, with the level name on the bottom of the frame. On the floor is a deep tube. As the player goes down the dark tube, the screen fades completely to black, the level loads, and the screen clears as the player drops into the level.
+
+(Also maybe a speedrun timer above the frame)
+
+There are levels from various stages of the player’s life, including:
+-Container ship
+-Oil rig
+-City area
+VVV Other ideas
+-Warehouse
+-Cove with lighthouse
+-Etc
+
+(Ultimately up to the art team)
+
+The different levels will help with development as each member of art, design, music, etc can work on a different level.
+
+The player goes through the levels, each unlocked after beating the last but you can replay previous levels
+
+Levels have currency (and other pickups?) scattered throughout to encourage exploration
+
+Want to add minigames? Add them throughout the levels with currency rewards!
+
+Final level is similar to the starting room, a bright white room, except there is a mirror and no door. The player looks in the mirror and ? (for narrative people to decide)
+
+The player is shown to be going insane, obviously through the whole “red door” concept, but also through certain aspects in the levels (for narrative and art people to decide), and also different post processing effects (film grain, chromatic aberration, etc).
+
+Basic Game Details
+
+Camera Options
+-Top down (I think the worst option, need third person animations, cannot go indoors or under objects, no advanced movement or height, etc)
+-Third person (harder to program, lots of edge cases, need third person player animations for every action)
+-First person (Best option in my opinion, simplest to program, works indoors and in tight areas, no third person animations, movement feels good)
+
+While between memory lane and level (black screen), the player gets to select a speciality and weapon for the next level. They choose between:
+
+-Mobility (Wallrunning and/or double jump/rocket boots, increased speed and jump height, decreased health)
+-Combat (Increased fire rate, damage, ammo capacity, decreased speed, gains regenerating shield)
+-Time (Increased health and speed, can slow down time but still move at normal speed)
+
+For the specialites, and:
+-Shotgun
+-Marksman Rifle
+-Projectile weapon (nailgun?)
+-LMG
+For the weapons.
+
+There could potentially be only 1 or 2 options per speciality, instead of any combo of specialty and weapon.
+
+Could be:
+-Mobility: SMG / Shotgun
+-Combat: LMG / Grenade Launcher
+-Time: Marksman Rifle / Projectile Weapon
+
+Now that I see it, I think that this is the better option. Maybe even have both weapons available
+
+Different weapons have different movement speeds.
+
+There is also a shop thing midway through each level that lets the player switch out their weapon and specialty and also spend the currency they have found/earned.
+
+The player can get upgrades for their weapons, health, speed, and shield at the shop.
+They can also buy ammo and health packs, and (potentially) different kinds of weapons.
+
+The players can scavenge ammo, health, and currency around the level and from enemies.
+
+The player's health does not regenerate normally; they must get pickups.
+
+There could be difficulty options that dictate the enemies’ health and damages, rarity of pickups, shop prices etc.
+
+Player Movement
+
+Player can walk/sprint
+Walking is already quite fast
+Sprinting is slightly faster, disables weapons, and allows higher jumping
+Low air control
+Speed dependant on equipped weapon, can de-equip weapons for fastest movement
+
+Weapon Specifics
+
+Just my ideas, obviously can be changed and subject to balance
+
+SMG > High rate of fire, 30-40 capacity, low damage, full auto
+Shotgun > Semi auto, 6-8 capacity, reload 2 shells at a time, 8-10 pellets shot
+LMG > Low rate of fire, high damage, 75-150 capacity, full auto
+Grenade Launcher > Fires a grenade that has high damage, 4-5 radius, single shot
+Marksman Rifle > Semi auto, high damage, 10-20 capacity
+Projectile Weapon > Semi or full auto, 15-30 capacity, medium damage
+
+Player can melee for instant kill
+Weapons have penetration
+No ADS
+
+
+
+
+Specialty Specifics
+
+Mobility
+Wallrunning
+Double jump or rocket boots/jetpack
+Faster speed
+Higher jump
+Lower health (focuses more on evading enemy fire)
+
+Combat
+Faster fire rate for weapons
+Higher damage for weapons
+Higher ammo capacity for weapons
+^^^ Don’t really apply if all weapons are locked to classes
+Lower movement speed
+Starts with some shield
+
+Time/Misc
+Higher health and move speed
+Can slow down time for enemies
+Cheaper shop upgrades
+Force pull for enemies and collectables
+
