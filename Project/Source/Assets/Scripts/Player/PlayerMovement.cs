@@ -1,31 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
+    public static PlayerMovement instance;
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private CharacterController controller;
 
     // Tooltips show text when you hover the cursor above the var in the inspector
 
     #region Public Variables
     [Header("Change")]
-    //[Tooltip(Tooltips.SPEED)]
-    [Min(0f)] public float speed = 5;
+    public MovementProfile movementProfile;
+    //[Min(0f)] public float walkingSpeed = 4;
+    //[Min(0f)] public float runningSpeed = 6;
+    [Min(0f)] public float speedChangeSmoothing = 5;
+    private float currentSpeed;
 
-    //[Tooltip(Tooltips.GRAVITY)]
-    public float gravity = 10;
+    //public float gravity = 10;
+    //
+    //[Min(0f)] public float walkingJumpHeight = 3;
+    //[Min(0f)] public float runningJumpHeight = 4;
+    private float currentJumpHeight;
+    private float secondsFromJump;
+    private bool justJumped;
 
-    //[Tooltip(Tooltips.JUMP_HEIGHT)]
-    [Min(0f)] public float jumpHeight = 3;
+    //[Min(0f)] public float groundAcceleration = 12;
+    //[Min(0f)] public float airAcceleration = 1;
 
-    //[Tooltip(Tooltips.GROUND_ACCEL)]
-    [Min(0f)] public float groundAcceleration = 12;
-
-    //[Tooltip(Tooltips.AIR_ACCEL)]
-    [Min(0f)] public float airAcceleration = 1;
-
+    public float edgePushMultiplier = 0.5f;
 
 
     [Header("Don't change")]
@@ -34,6 +44,9 @@ public class PlayerMovement : MonoBehaviour
 
     //[Tooltip(Tooltips.GROUND_LENGTH)]
     public float groundedRaycastLength = 0.6f;
+
+    //[Tooltip(Tooltips.DOWNFORCE_SIZE)]
+    public float downforceCheckSize = 0.2f;
 
     //[Tooltip(Tooltips.DOWNFORCE_LENGTH)]
     public float downforceCheckLength = 0.5f;
@@ -81,6 +94,13 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     public Vector3 LocalActualVelocity => transform.InverseTransformDirection(actualVelocity);
 
+    public bool Moving => actualVelocity.Flattened().sqrMagnitude > 0.05f && desiredVelocity.sqrMagnitude > 0.05f;
+
+    public static event Action<float> OnLand;
+    private float airtime;
+    private Vector3 currentNormal;
+
+
     private void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -90,53 +110,131 @@ public class PlayerMovement : MonoBehaviour
     {
         if (controller == null) controller = GetComponent<CharacterController>();
 
-        grounded = Physics.SphereCast(new Ray(transform.position, Vector3.down), groundedRaycastSize, groundedRaycastLength + controller.skinWidth, groundLayermask);
-        applyDownforce = Physics.SphereCast(new Ray(transform.position, Vector3.down), groundedRaycastSize, downforceCheckLength + controller.skinWidth, groundLayermask);
-        // Grounded is used to check if you can jump, Downforce used on ramps so you dont bump down them
+        UpdateGrounded();
 
+        UpdateSprinting();
+
+        Move();
+
+        UpdateFOV();
+
+        UpdateCrosshair();
+
+        wasGrounded = grounded;
+        actualVelocity = (transform.position - lastPos) / Time.deltaTime;
+        lastPos = transform.position;
+    }
+
+    private void Move()
+    {
         desiredVelocity.x = Input.GetAxis("Horizontal");
         desiredVelocity.z = Input.GetAxis("Vertical");
         // Sets the desired velocity
 
         float y = currentVelocity.y;
-        // Stores the gravity of the current velocity so we can re-apply it later
 
         Vector3 flatVel = currentVelocity.Flattened();
-        // The current velocity with no y value, just the horizontal plane
 
         transformedDesiredVelocity = transform.right * desiredVelocity.x + transform.forward * desiredVelocity.z;
-        // Transforms the velocity and desired direction from world space to local space and stores them
-
         transformedDesiredVelocity = Vector3.ClampMagnitude(transformedDesiredVelocity, 1);
-        // Clamps the magnitude to 1 so going diagonal isn't faster
+        transformedDesiredVelocity *= currentSpeed;
 
-        transformedDesiredVelocity *= speed;
-        // Multiplies the desired velocity by speed
-
-        float accel = grounded ? groundAcceleration : airAcceleration;
-        // Decides whether to use the ground acceleration or the air acceleration,
-        // depending if you are grounded or not
+        float accel = grounded ? movementProfile.groundAcceleration : movementProfile.airAcceleration;
 
         currentVelocity = Vector3.Lerp(flatVel, transformedDesiredVelocity, Time.deltaTime * accel).WithY(y);
-        // Smoothes the current velocity towards the desired velocity, and also adds the gravity back
 
         bool jump = Input.GetKeyDown(KeyCode.Space);
 
         if (grounded)
         {
-            if (jump) currentVelocity.y = jumpHeight; // If you are grounded and want to jump, jump
-            else if (applyDownforce) currentVelocity.y = -downForce; // Otherwise, apply downforce
+            if (!wasGrounded)
+            {
+                OnLand?.Invoke(airtime);
+                airtime = 0;
+            }
+
+            if (jump)
+            {
+                float movingJumpBonus = Mathf.Clamp(desiredVelocity.sqrMagnitude, 0, 0.5f); // 0.5 unit bonus if you are moving
+                currentVelocity.y = currentJumpHeight + movingJumpBonus; // If you are grounded and want to jump, jump
+                justJumped = true;
+            }
+            else if (applyDownforce && !justJumped) currentVelocity.y = -downForce; // Otherwise, apply downforce
+        }
+        else
+        {
+            airtime += Time.deltaTime;
         }
 
-        currentVelocity.y = Mathf.Clamp(currentVelocity.y - gravity * Time.deltaTime, -maxFallSpeed, 5000);
+        if (justJumped) secondsFromJump += Time.deltaTime;
+
+        if (secondsFromJump > 0.2f)
+        {
+            justJumped = false;
+            secondsFromJump = 0;
+        }
+
+        currentVelocity.y = Mathf.Clamp(currentVelocity.y - movementProfile.gravity * Time.deltaTime, -maxFallSpeed, 5000);
         // Adds gravity and also clamps the max vertical speed
 
-        controller.Move(currentVelocity * Time.deltaTime);
-        // Actually moves the controller
+        float angle = Vector3.Angle(Vector3.up, currentNormal);
 
-        wasGrounded = grounded; // Not currently used value, but good to have
-        actualVelocity = (transform.position - lastPos) / Time.deltaTime; // Calculates actual velocity in the world
-        lastPos = transform.position;
+        if (controller.collisionFlags.HasFlag(CollisionFlags.Below) && angle > controller.slopeLimit)
+        {
+            Vector3 direction = currentNormal.normalized;//.Flattened().normalized;
+            float factor = Mathf.InverseLerp(controller.slopeLimit, 90, angle);
+            //factor = Mathf.Max(factor, 0.1f);
+            currentVelocity += direction * edgePushMultiplier * factor;
+        }
+
+        controller.Move(currentVelocity * Time.deltaTime);
+    }
+
+    private void UpdateFOV()
+    {
+        float value = Moving ? Mathf.InverseLerp(movementProfile.walkingSpeed, movementProfile.runningSpeed, currentSpeed) : 0f;
+        float multiplier = 1f + value * 0.3f; // Will go between 1 and 1.3
+
+        CameraFOV.Set(multiplier);
+    }
+
+    private void UpdateCrosshair()
+    {
+        float speedMagnitude = actualVelocity.magnitude;
+        float multiplier = 1 + speedMagnitude * 0.5f;
+
+        Crosshair.Set(multiplier);
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (controller.collisionFlags.HasFlag(CollisionFlags.Below))
+            currentNormal = hit.normal;
+        else
+            currentNormal = Vector3.up;
+    }
+
+    private void UpdateGrounded()
+    {
+        grounded = Physics.SphereCast(new Ray(transform.position, Vector3.down), groundedRaycastSize, groundedRaycastLength + controller.skinWidth, groundLayermask);
+        applyDownforce = Physics.SphereCast(new Ray(transform.position, Vector3.down), downforceCheckSize, downforceCheckLength + controller.skinWidth, groundLayermask);
+    }
+
+    private void UpdateSprinting()
+    {
+        bool sprinting = Input.GetKey(KeyCode.LeftShift);
+        float airMultiplier = grounded ? 1f : movementProfile.airSpeedMultiplier;
+
+        if (sprinting && Moving)
+        {
+            currentSpeed = Mathf.Lerp(currentSpeed, movementProfile.runningSpeed * airMultiplier, Time.deltaTime * speedChangeSmoothing);
+            currentJumpHeight = Mathf.Lerp(currentJumpHeight, movementProfile.runningJumpHeight, Time.deltaTime * speedChangeSmoothing);
+        }
+        else
+        {
+            currentSpeed = Mathf.Lerp(currentSpeed, movementProfile.walkingSpeed * airMultiplier, Time.deltaTime * speedChangeSmoothing);
+            currentJumpHeight = Mathf.Lerp(currentJumpHeight, movementProfile.walkingJumpHeight, Time.deltaTime * speedChangeSmoothing);
+        }
     }
 
     private void OnDrawGizmosSelected()
@@ -146,7 +244,7 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position + Vector3.down * (groundedRaycastLength + controller.skinWidth), groundedRaycastSize);
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(transform.position + Vector3.down * (downforceCheckLength + controller.skinWidth), groundedRaycastSize);
+        Gizmos.DrawSphere(transform.position + Vector3.down * (downforceCheckLength + controller.skinWidth), downforceCheckSize);
         
         // Just draws the ground check rays so you can make sure they intersect the ground
     }
