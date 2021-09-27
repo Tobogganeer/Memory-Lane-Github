@@ -17,7 +17,7 @@ public enum Specialty
 public enum WeaponType
 {
     Shotgun,
-    SMG,
+    SMGPistol,
     LMG,
     GrenadeLauncher,
     Projectile,

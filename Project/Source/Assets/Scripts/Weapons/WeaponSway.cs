@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WeaponSway : MonoBehaviour
 {
-    public PlayerMovement movement;
+    public Player player;
 
     public Transform mouseSwayObj;
     public Transform movementSwayObj;
@@ -24,10 +24,12 @@ public class WeaponSway : MonoBehaviour
     public float verticalMultiplier = 1.5f;
 
     [Header("Movement Bob")]
+    public bool bobUp = true;
     public float bobSpeed = 2.5f;
     public float bobAmount = 0.03f;
     public Vector3 airOffset = new Vector3(0, -0.1f, -0.05f);
     public Vector3 movingOffset = new Vector3(0, -0.01f, -0.01f);
+    public float runningMultiplier = 1.5f;
     public float smoothSpeed = 5;
     private float time;
 
@@ -45,7 +47,8 @@ public class WeaponSway : MonoBehaviour
     {
         // Moves the ball when you move the mouse
         float invert = invertMouse ? -1 : 1;
-        Vector2 desiredMovement = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")) * invert * mouseSwayAmount;
+        Vector2 desiredMovement = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * invert * mouseSwayAmount;
+        //desiredMovement *= Time.deltaTime;
         desiredMovement.x = Mathf.Clamp(desiredMovement.x, -mouseMaxAmount, mouseMaxAmount);
         desiredMovement.y = Mathf.Clamp(desiredMovement.y, -mouseMaxAmount, mouseMaxAmount);
 
@@ -57,7 +60,7 @@ public class WeaponSway : MonoBehaviour
     {
         // Moves the ball when you move the character
         float invert = invertMovement ? -1 : 1;
-        Vector3 desiredMovement = invert * movement.LocalActualVelocity * movementSwayAmount;
+        Vector3 desiredMovement = invert * player.movement.LocalActualVelocity * movementSwayAmount;
         desiredMovement.x = Mathf.Clamp(desiredMovement.x, -movementMaxAmount, movementMaxAmount);
         desiredMovement.y = -1 * verticalMultiplier * Mathf.Clamp(desiredMovement.y,
             -movementMaxAmount * verticalMultiplier, movementMaxAmount * verticalMultiplier);
@@ -68,25 +71,32 @@ public class WeaponSway : MonoBehaviour
     private void MovementBob()
     {
         // Makes the ball bob back and forth when you move
-        Vector3 actualHorizontalVelocity = movement.LocalActualVelocity.Flattened();
+        Vector3 actualHorizontalVelocity = player.movement.LocalActualVelocity.Flattened();
 
         float velocityMag = actualHorizontalVelocity.magnitude;
-        time += Time.deltaTime * bobSpeed * velocityMag;
+
+        WeaponProfile currentProfile = Weapons.GetProfile(player.currentWeapon);
+
+        time += Time.deltaTime * bobSpeed * velocityMag * currentProfile.BobSpeedMultiplier;
 
         float sinValue = Mathf.Sin(time);
         Vector3 offset;
 
-        if (movement.grounded)
+        if (player.movement.grounded)
         //if (movement.applyDownforce)
         {
-            float movementScale = Mathf.InverseLerp(0, movement.movementProfile.runningSpeed, velocityMag);
-            offset = new Vector3(sinValue, -Mathf.Abs(sinValue)) * bobAmount;
+            float verticalMult = bobUp ? -1 : 1;
+            float runningMult = Mathf.Lerp(1, runningMultiplier, player.movement.NormalizedSpeed);
+
+            float movementScale = Mathf.InverseLerp(0, player.movement.movementProfile.runningSpeed, velocityMag);
+            float multiplier = bobAmount * runningMult * currentProfile.BobAmountMultiplier;
+            offset = new Vector3(sinValue, verticalMult * Mathf.Abs(sinValue)) * multiplier;
             offset += movingOffset * velocityMag * movementScale;
         }
         else
             offset = airOffset;
 
-        if (velocityMag < 1f && movement.grounded) offset *= velocityMag;
+        if (velocityMag < 1f && player.movement.grounded) offset *= velocityMag;
 
         CalculateFootstep(sinValue, velocityMag);
 
@@ -96,18 +106,18 @@ public class WeaponSway : MonoBehaviour
 
     private void CalculateFootstep(float sinValue, float magnitude)
     {
-        if (magnitude == 0 || !movement.grounded)
+        if (magnitude == 0 || !player.movement.grounded)
         {
             time = 0;
             currentFoot = Foot.Right;
         }
 
-        if (sinValue > 0.9f && currentFoot == Foot.Right && movement.grounded)
+        if (sinValue > 0.9f && currentFoot == Foot.Right && player.movement.grounded)
         {
             OnFootstep?.Invoke(Foot.Right, magnitude);
             currentFoot = Foot.Left;
         }
-        else if (sinValue < -0.9f && currentFoot == Foot.Left && movement.grounded)
+        else if (sinValue < -0.9f && currentFoot == Foot.Left && player.movement.grounded)
         {
             OnFootstep?.Invoke(Foot.Left, magnitude);
             currentFoot = Foot.Right;

@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private CharacterController controller;
+    public Player player;
 
     // Tooltips show text when you hover the cursor above the var in the inspector
 
@@ -96,6 +97,11 @@ public class PlayerMovement : MonoBehaviour
 
     public bool Moving => actualVelocity.Flattened().sqrMagnitude > 0.05f && desiredVelocity.sqrMagnitude > 0.05f;
 
+    /// <summary>
+    /// A value between 0-1 depending on if the player is walking or running
+    /// </summary>
+    public float NormalizedSpeed => Mathf.InverseLerp(movementProfile.walkingSpeed, movementProfile.runningSpeed, currentSpeed);
+
     public static event Action<float> OnLand;
     private float airtime;
     private Vector3 currentNormal;
@@ -112,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
 
         UpdateGrounded();
 
-        UpdateSprinting();
+        UpdateSpeed();
 
         Move();
 
@@ -192,7 +198,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateFOV()
     {
-        float value = Moving ? Mathf.InverseLerp(movementProfile.walkingSpeed, movementProfile.runningSpeed, currentSpeed) : 0f;
+        float value = Moving ? NormalizedSpeed : 0f;
         float multiplier = 1f + value * 0.3f; // Will go between 1 and 1.3
 
         CameraFOV.Set(multiplier);
@@ -220,21 +226,20 @@ public class PlayerMovement : MonoBehaviour
         applyDownforce = Physics.SphereCast(new Ray(transform.position, Vector3.down), downforceCheckSize, downforceCheckLength + controller.skinWidth, groundLayermask);
     }
 
-    private void UpdateSprinting()
+    private void UpdateSpeed()
     {
         bool sprinting = Input.GetKey(KeyCode.LeftShift);
         float airMultiplier = grounded ? 1f : movementProfile.airSpeedMultiplier;
+        WeaponProfile currentProfile = Weapons.GetProfile(player.currentWeapon);
 
-        if (sprinting && Moving)
-        {
-            currentSpeed = Mathf.Lerp(currentSpeed, movementProfile.runningSpeed * airMultiplier, Time.deltaTime * speedChangeSmoothing);
-            currentJumpHeight = Mathf.Lerp(currentJumpHeight, movementProfile.runningJumpHeight, Time.deltaTime * speedChangeSmoothing);
-        }
-        else
-        {
-            currentSpeed = Mathf.Lerp(currentSpeed, movementProfile.walkingSpeed * airMultiplier, Time.deltaTime * speedChangeSmoothing);
-            currentJumpHeight = Mathf.Lerp(currentJumpHeight, movementProfile.walkingJumpHeight, Time.deltaTime * speedChangeSmoothing);
-        }
+        float baseSpeed = sprinting && Moving ? movementProfile.runningSpeed : movementProfile.walkingSpeed;
+        float desiredSpeed = baseSpeed * airMultiplier * currentProfile.SpeedMultiplier;
+
+        float baseJump = sprinting && Moving ? movementProfile.runningJumpHeight : movementProfile.walkingJumpHeight;
+        float desiredJump = baseJump * currentProfile.JumpMultiplier;
+
+        currentSpeed = Mathf.Lerp(currentSpeed, desiredSpeed, Time.deltaTime * speedChangeSmoothing);
+        currentJumpHeight = Mathf.Lerp(currentJumpHeight, desiredJump, Time.deltaTime * speedChangeSmoothing);
     }
 
     private void OnDrawGizmosSelected()

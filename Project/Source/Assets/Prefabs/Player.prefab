@@ -166,23 +166,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d221a851798fd345be64972e6e6b23a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 8418537472759645397}
+  player: {fileID: 8309827073749859735}
   mouseSwayObj: {fileID: 8418537472114023386}
   movementSwayObj: {fileID: 8418537471766544693}
   movementBobObj: {fileID: 8418537471872864461}
   invertMouse: 1
   mouseSwayAmount: 0.3
-  mouseMaxAmount: 0.7
+  mouseMaxAmount: 0.17
   mouseSmoothAmount: 5
   invertMovement: 0
   movementSwayAmount: 0.02
   movementMaxAmount: 0.7
   movementSmoothAmount: 5
-  verticalMultiplier: 2
+  verticalMultiplier: 1
+  bobUp: 0
   bobSpeed: 2
-  bobAmount: 0.04
+  bobAmount: 0.03
   airOffset: {x: 0, y: -0.06, z: -0.05}
   movingOffset: {x: 0, y: -0.02, z: -0.03}
+  runningMultiplier: 3
   smoothSpeed: 5
 --- !u!1 &8418537471766544692
 GameObject:
@@ -291,6 +293,7 @@ GameObject:
   - component: {fileID: 8418537472759645399}
   - component: {fileID: 8418537472759645398}
   - component: {fileID: 8418537472759645397}
+  - component: {fileID: 8309827073749859735}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -407,6 +410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d72a7d7e2e7f8da4facf6a70d4f0cc3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 8309827073749859735}
   movementProfile: {fileID: 11400000, guid: 7c6d35e26d030324abd5566f9d547e22, type: 2}
   speedChangeSmoothing: 6
   edgePushMultiplier: 0.05
@@ -419,6 +423,22 @@ MonoBehaviour:
   groundLayermask:
     serializedVersion: 2
     m_Bits: 1
+--- !u!114 &8309827073749859735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8418537472759645396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe5b9d822c5af394e80e0b2f38b19829, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movement: {fileID: 8418537472759645397}
+  weaponSway: {fileID: 8418537471756185158}
+  fpsCamera: {fileID: 581625029}
+  currentWeapon: 1
 --- !u!1 &8418537472949122950
 GameObject:
   m_ObjectHideFlags: 0
@@ -614,7 +634,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 74193e9d9f4f2c642ac9d9e4d1b52ad2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: -0.021
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 74193e9d9f4f2c642ac9d9e4d1b52ad2, type: 3}
       propertyPath: m_LocalPosition.y

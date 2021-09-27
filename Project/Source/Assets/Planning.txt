@@ -1,3 +1,15 @@
+
+
+
+
+
+
+
+
+
+
+
+
 Level design/narrative
 
 The player starts in a white room with a bright red door.
@@ -54,7 +66,7 @@ For the weapons.
 There could potentially be only 1 or 2 options per speciality, instead of any combo of specialty and weapon.
 
 Could be:
--Mobility: SMG / Shotgun
+-Mobility: SMG or Pistol / Shotgun
 -Combat: LMG / Grenade Launcher
 -Time: Marksman Rifle / Projectile Weapon
 
