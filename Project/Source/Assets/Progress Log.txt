@@ -14,3 +14,8 @@ Day 2: Sept 25
 	Added Crosshair
 	Added camera fov changes when running
 }
+
+Day 3: Sept 29
+{
+	Started planning for weapons and finished Nateva model
+}

@@ -116,6 +116,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (controller == null) controller = GetComponent<CharacterController>();
 
+        Inputs.Update();
+
         UpdateGrounded();
 
         UpdateSpeed();
@@ -133,8 +135,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        desiredVelocity.x = Input.GetAxis("Horizontal");
-        desiredVelocity.z = Input.GetAxis("Vertical");
+        //desiredVelocity.x = Input.GetAxis("Horizontal");
+        //desiredVelocity.z = Input.GetAxis("Vertical");
+        desiredVelocity.x = Inputs.Horizontal;
+        desiredVelocity.z = Inputs.Vertical;
         // Sets the desired velocity
 
         float y = currentVelocity.y;
@@ -149,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
 
         currentVelocity = Vector3.Lerp(flatVel, transformedDesiredVelocity, Time.deltaTime * accel).WithY(y);
 
-        bool jump = Input.GetKeyDown(KeyCode.Space);
+        bool jump = Input.GetKeyDown(Inputs.Jump);
 
         if (grounded)
         {
@@ -228,7 +232,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateSpeed()
     {
-        bool sprinting = Input.GetKey(KeyCode.LeftShift);
+        bool sprinting = Input.GetKey(Inputs.Sprint);
         float airMultiplier = grounded ? 1f : movementProfile.airSpeedMultiplier;
         WeaponProfile currentProfile = Weapons.GetProfile(player.currentWeapon);
 

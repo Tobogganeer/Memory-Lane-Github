@@ -18,5 +18,5 @@ MonoBehaviour:
   gravity: 10
   walkingJumpHeight: 3.5
   runningJumpHeight: 4.5
-  groundAcceleration: 10
+  groundAcceleration: 12
   airAcceleration: 1.4

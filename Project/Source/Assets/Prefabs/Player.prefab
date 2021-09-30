@@ -468,9 +468,84 @@ Transform:
   m_Children:
   - {fileID: 8819906319301309479}
   - {fileID: 4025590975086139839}
+  - {fileID: 3330292576017254858}
   m_Father: {fileID: 8418537471872864461}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3007606346328337953
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8418537472949122951}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.121
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.027
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.054
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+      propertyPath: m_Name
+      value: Nateva with hands test
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4831018558786363571, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7957650991686333817, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+--- !u!4 &3330292576017254858 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c287bd791bf2a0f4193d53dfa5d64bc3, type: 3}
+  m_PrefabInstance: {fileID: 3007606346328337953}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3483390089717513812
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -679,6 +754,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 74193e9d9f4f2c642ac9d9e4d1b52ad2, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 74193e9d9f4f2c642ac9d9e4d1b52ad2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3797340887827021587, guid: 74193e9d9f4f2c642ac9d9e4d1b52ad2, type: 3}
       propertyPath: m_Layer

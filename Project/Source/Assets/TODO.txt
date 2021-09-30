@@ -1,1 +1,12 @@
 Fix weapon sway in builds
+^^^ kinda fixed, find out why it was happening in the first place
+
+Weapon Animations
+{
+	Reload
+	Reload Empty
+	Fire (up to 3 different fires)
+	Idle
+	A few idle things (move fingers etc)
+	Inspect
+}
