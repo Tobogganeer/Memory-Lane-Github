@@ -18,10 +18,21 @@ public enum WeaponType
 {
     Shotgun,
     SMGPistol,
+    Revolver,
     LMG,
     GrenadeLauncher,
     Projectile,
     MarksmanRifle
+}
+
+public enum Level
+{
+    MainMenu,
+    MemoryLane,
+    CargoShip,
+    OilRig,
+    City,
+    Cove
 }
 
 //public enum SurfaceType : byte

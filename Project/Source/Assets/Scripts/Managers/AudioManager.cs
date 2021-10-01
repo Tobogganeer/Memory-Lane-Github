@@ -15,6 +15,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
+        transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
 
         clips.Clear();

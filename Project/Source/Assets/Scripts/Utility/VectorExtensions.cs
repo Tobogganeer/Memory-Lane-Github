@@ -89,4 +89,22 @@ public static class VectorExtensions
     {
 		return new Vector3(Mathf.Clamp(v.x, min.x, max.x), Mathf.Clamp(v.y, min.y, max.y), Mathf.Clamp(v.z, min.z, max.z));
     }
+
+	public static bool IsWithinBounds(this Vector3 v, Vector3 min, Vector3 max)
+    {
+		if (v.x < min.x) return false;
+		if (v.y < min.y) return false;
+		if (v.z < min.z) return false;
+
+		if (v.x > max.x) return false;
+		if (v.y > max.y) return false;
+		if (v.z > max.z) return false;
+
+		return true;
+    }
+
+	public static Vector3 Abs(this Vector3 v)
+    {
+		return new Vector3(Mathf.Abs(v.x), Mathf.Abs(v.y), Mathf.Abs(v.z));
+    }
 }

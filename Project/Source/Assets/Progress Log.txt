@@ -19,3 +19,11 @@ Day 3: Sept 29
 {
 	Started planning for weapons and finished Nateva model
 }
+
+Day 4: Sept 30
+{
+	Added SceneManager
+	Completed LMG and Shotgun
+	Made level a bit larger
+	Prevented player going out of bounds
+}

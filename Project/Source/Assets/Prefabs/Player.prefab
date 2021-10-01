@@ -294,6 +294,7 @@ GameObject:
   - component: {fileID: 8418537472759645398}
   - component: {fileID: 8418537472759645397}
   - component: {fileID: 8309827073749859735}
+  - component: {fileID: 726385317}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -373,7 +374,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8418537472759645396}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 993ac2a4d6bd6594fa1570de174b2f6b, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -439,6 +440,24 @@ MonoBehaviour:
   weaponSway: {fileID: 8418537471756185158}
   fpsCamera: {fileID: 581625029}
   currentWeapon: 1
+--- !u!114 &726385317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8418537472759645396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 894d8c3bb80a1e146b9a22d3690fae7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  min: {x: -250, y: -25, z: -250}
+  max: {x: 250, y: 250, z: 250}
+  returnPoint: {fileID: 0}
+  logWarnings: 1
+  hasController: 1
+  hasRb: 0
 --- !u!1 &8418537472949122950
 GameObject:
   m_ObjectHideFlags: 0

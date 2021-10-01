@@ -12,16 +12,16 @@ public class Weapons : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (instance == null) instance = this;
+
+        else if (instance != this)
         {
             Destroy(gameObject);
             return;
         }
+
+        transform.SetParent(null);
+        DontDestroyOnLoad(gameObject);
 
         profiles.Clear();
 
