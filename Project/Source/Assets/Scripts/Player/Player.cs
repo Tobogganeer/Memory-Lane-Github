@@ -14,5 +14,5 @@ public class Player : MonoBehaviour
     public WeaponSway weaponSway;
     public FPSCamera fpsCamera;
 
-    public WeaponType currentWeapon = WeaponType.SMGPistol; // Temp, will be changed to a weapon class later
+    public WeaponType currentWeapon = WeaponType.P3K; // Temp, will be changed to a weapon class later
 }

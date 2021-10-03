@@ -5,6 +5,7 @@ Day 1: Sept 24
 	Don't think everyone will agree so I am starting this now
 	Will see how far I can get while other game progresses in school
 }
+
 Day 2: Sept 25
 {
 	Added player
@@ -26,4 +27,14 @@ Day 4: Sept 30
 	Completed LMG and Shotgun
 	Made level a bit larger
 	Prevented player going out of bounds
+}
+
+Day 5: Oct 1
+{
+	Finished all weapon models and got them rigged
+}
+
+Day 6: Oct 2
+{
+	Finished anims for P3K and Nateva
 }

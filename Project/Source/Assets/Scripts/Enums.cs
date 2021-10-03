@@ -16,13 +16,12 @@ public enum Specialty
 
 public enum WeaponType
 {
-    Shotgun,
-    SMGPistol,
-    Revolver,
-    LMG,
-    GrenadeLauncher,
-    Projectile,
-    MarksmanRifle
+    XRM, // Shotgun
+    P3K, // Pistol
+    Nateva, // Revolver
+    Molkor, // LMG
+    GR3_N, // Grenade Launcher
+    MK_X // Marksman Rifle
 }
 
 public enum Level

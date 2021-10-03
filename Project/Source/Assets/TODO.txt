@@ -3,10 +3,52 @@ Fix weapon sway in builds
 
 Weapon Animations
 {
+	Draw
 	Reload
 	Reload Empty
 	Fire (up to 3 different fires)
+	Fire empty
 	Idle
 	A few idle things (move fingers etc)
 	Inspect
+}
+
+Modelling
+{
+	MK-X DONE
+	XRM DONE
+	Nateva DONE
+	Molkor DONE
+	P3K DONE
+	GR3-N DONE
+}
+
+Rigging
+{
+	MK-X DONE
+	XRM DONE
+	Nateva DONE
+	Molkor DONE
+	P3K DONE
+	GR3-N DONE
+}
+
+Anim Setup
+{
+	MK-X DONE
+	XRM DONE
+	Nateva DONE
+	Molkor DONE
+	P3K DONE
+	GR3-N DONE
+}
+
+Animating
+{
+	MK-X
+	XRM
+	Nateva
+	Molkor
+	P3K
+	GR3-N
 }

@@ -574,7 +574,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponProfiles:
+  - {fileID: 11400000, guid: 3afdc78a26aa96943b8ab1291ef8c4f4, type: 2}
+  - {fileID: 11400000, guid: 70f65afbd34e1414286b06aa62e43266, type: 2}
+  - {fileID: 11400000, guid: 1563a2e73747a1848b737235e9d1e47e, type: 2}
+  - {fileID: 11400000, guid: 14500fdb81d0a9649b03a2a88d013ff1, type: 2}
   - {fileID: 11400000, guid: d8f2b732bbb5da44eb57539eea419b36, type: 2}
+  - {fileID: 11400000, guid: 28f5d3c9f2bc50b46a7280d24586d0c7, type: 2}
 --- !u!1 &593771533
 GameObject:
   m_ObjectHideFlags: 0
@@ -1465,7 +1470,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-11688
+  m_Name: pb_Mesh20362
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3431,7 +3436,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh21916
+  m_Name: pb_Mesh20340
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3683,7 +3688,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh21896
+  m_Name: pb_Mesh20318
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
