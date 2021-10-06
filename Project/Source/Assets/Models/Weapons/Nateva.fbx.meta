@@ -27,7 +27,12 @@ ModelImporter:
   - first:
       74: 3036636747160317484
     second: Nateva|Reload Empty.001
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mat
+    second: {fileID: 2100000, guid: a32a60f116cc36e40a8057e35a6791e8, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -60,7 +65,7 @@ ModelImporter:
       takeName: Nateva|Draw
       internalID: 0
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 20
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
