@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6cdedd6c63920e49aff29d0fb78426d, type: 3}
   m_Name: Nateva
   m_EditorClassIdentifier: 
-  type: 2
+  type: 1
   speedMultiplier: 0.95
   jumpMultiplier: 1
   bobSpeedMultiplier: 0.9

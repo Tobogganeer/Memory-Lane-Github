@@ -38,3 +38,21 @@ Day 6: Oct 2
 {
 	Finished anims for P3K and Nateva
 }
+
+Day 7: Oct 4
+{
+	Finished MK-X anims
+}
+
+Day 8: Oct 5
+{
+	Finished GR3-N and Molkor anims
+}
+
+Day 9: Oct 6
+{
+	Finished XRM anims
+	Tweaked values for weapon sway
+	Started scripting for weapons, instead of just animation players
+	Added very sus kaleb sounds for guns firing
+}

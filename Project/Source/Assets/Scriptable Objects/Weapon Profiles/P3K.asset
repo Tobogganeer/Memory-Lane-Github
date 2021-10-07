@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6cdedd6c63920e49aff29d0fb78426d, type: 3}
   m_Name: P3K
   m_EditorClassIdentifier: 
-  type: 1
+  type: 0
   speedMultiplier: 1
   jumpMultiplier: 1
   bobSpeedMultiplier: 1

@@ -12,10 +12,20 @@ public static class Inputs
     public static KeyCode Sprint => inputProfile.sprint;
     public static KeyCode Jump => inputProfile.jump;
 
+    public static KeyCode Fire => inputProfile.fire;
+    public static KeyCode Reload => inputProfile.reload;
+    public static KeyCode Inspect => inputProfile.inspect;
+    public static KeyCode Interact => inputProfile.interact;
+
     public static InputProfile inputProfile;
 
     public static float Horizontal { get; private set; }
     public static float Vertical { get; private set; }
+
+    static Inputs()
+    {
+        inputProfile = new InputProfile();
+    }
 
     //private const float AXIS_SPEED = 3;
     //private const float SNAP_THRESHOLD = 0.95f;

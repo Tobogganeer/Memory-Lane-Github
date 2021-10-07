@@ -16,12 +16,12 @@ public enum Specialty
 
 public enum WeaponType
 {
-    XRM, // Shotgun
     P3K, // Pistol
     Nateva, // Revolver
+    MK_X, // Marksman Rifle
     Molkor, // LMG
     GR3_N, // Grenade Launcher
-    MK_X // Marksman Rifle
+    XRM, // Shotgun
 }
 
 public enum Level
@@ -109,7 +109,13 @@ public enum AudioArray
     Null,
     RightFoot,
     LeftFoot,
-    Jump
+    Jump,
+    Fire_P3K,
+    Fire_Nateva,
+    Fire_MK_X,
+    Fire_Molkor,
+    Fire_GR3_N,
+    Fire_XRM
 }
 
 public enum PooledObject

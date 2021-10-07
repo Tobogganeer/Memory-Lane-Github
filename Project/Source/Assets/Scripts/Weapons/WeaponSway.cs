@@ -12,9 +12,9 @@ public class WeaponSway : MonoBehaviour
 
     [Header("Mouse")]
     public bool invertMouse = true;
-    public float mouseSwayAmount = 0.3f;
-    public float mouseMaxAmount = 0.7f;
-    public float mouseSmoothAmount = 5f;
+    public float mouseSwayAmount = 0.03f;
+    public float mouseMaxAmount = 0.04f;
+    public float mouseSmoothAmount = 12f;
 
     [Header("Movement")]
     public bool invertMovement = false;
@@ -45,9 +45,8 @@ public class WeaponSway : MonoBehaviour
 
     private void MouseSway()
     {
-        // Moves the ball when you move the mouse
         float invert = invertMouse ? -1 : 1;
-        Vector2 desiredMovement = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * invert * mouseSwayAmount;
+        Vector2 desiredMovement = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")) * invert * mouseSwayAmount;
         //desiredMovement *= Time.deltaTime;
         desiredMovement.x = Mathf.Clamp(desiredMovement.x, -mouseMaxAmount, mouseMaxAmount);
         desiredMovement.y = Mathf.Clamp(desiredMovement.y, -mouseMaxAmount, mouseMaxAmount);
@@ -58,7 +57,6 @@ public class WeaponSway : MonoBehaviour
 
     private void MovementSway()
     {
-        // Moves the ball when you move the character
         float invert = invertMovement ? -1 : 1;
         Vector3 desiredMovement = invert * player.movement.LocalActualVelocity * movementSwayAmount;
         desiredMovement.x = Mathf.Clamp(desiredMovement.x, -movementMaxAmount, movementMaxAmount);
@@ -70,7 +68,6 @@ public class WeaponSway : MonoBehaviour
 
     private void MovementBob()
     {
-        // Makes the ball bob back and forth when you move
         Vector3 actualHorizontalVelocity = player.movement.LocalActualVelocity.Flattened();
 
         float velocityMag = actualHorizontalVelocity.magnitude;

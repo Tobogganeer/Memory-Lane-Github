@@ -12,6 +12,11 @@ public class InputProfile
     public KeyCode sprint = KeyCode.LeftShift;
     public KeyCode jump = KeyCode.Space;
 
+    public KeyCode fire = KeyCode.Mouse0;
+    public KeyCode reload = KeyCode.R;
+    public KeyCode inspect = KeyCode.F;
+    public KeyCode interact = KeyCode.E;
+
     public InputProfile()
     {
         forward = KeyCode.W;
@@ -21,5 +26,10 @@ public class InputProfile
 
         sprint = KeyCode.LeftShift;
         jump = KeyCode.Space;
+
+        fire = KeyCode.Mouse0;
+        reload = KeyCode.R;
+        inspect = KeyCode.F;
+        interact = KeyCode.E;
     }
 }
