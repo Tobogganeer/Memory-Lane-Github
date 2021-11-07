@@ -17,3 +17,16 @@ MonoBehaviour:
   jumpMultiplier: 1
   bobSpeedMultiplier: 1
   bobAmountMultiplier: 1
+  camShakePreset: {fileID: 11400000, guid: 3fba06dac8e85e84289fd45c406097e3, type: 2}
+  ballisticsSettings:
+    penetrationPower: 0.35
+    maxPenetrations: 5
+    falloff: 1
+  maxRange: 250
+  baseDamage: 28
+  innaccuracy: 3
+  tracerProbability: 1
+  layermask:
+    serializedVersion: 2
+    m_Bits: 2561
+  rbForce: 8

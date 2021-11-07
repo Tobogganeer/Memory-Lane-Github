@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController controller;
     public Player player;
 
+    public CharacterController Controller => instance.controller;
+
     // Tooltips show text when you hover the cursor above the var in the inspector
 
     #region Public Variables
@@ -96,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 LocalActualVelocity => transform.InverseTransformDirection(actualVelocity);
 
     public bool Moving => actualVelocity.Flattened().sqrMagnitude > 0.05f && desiredVelocity.sqrMagnitude > 0.05f;
+    public bool Sprinting => Input.GetKey(Inputs.Sprint);
 
     /// <summary>
     /// A value between 0-1 depending on if the player is walking or running
@@ -202,7 +205,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateFOV()
     {
-        float value = Moving ? NormalizedSpeed : 0f;
+        float value = Moving && Sprinting ? NormalizedSpeed : 0f;
         float multiplier = 1f + value * 0.3f; // Will go between 1 and 1.3
 
         CameraFOV.Set(multiplier);
@@ -226,20 +229,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateGrounded()
     {
-        grounded = Physics.SphereCast(new Ray(transform.position, Vector3.down), groundedRaycastSize, groundedRaycastLength + controller.skinWidth, groundLayermask);
-        applyDownforce = Physics.SphereCast(new Ray(transform.position, Vector3.down), downforceCheckSize, downforceCheckLength + controller.skinWidth, groundLayermask);
+        grounded = Physics.CheckSphere(transform.position - new Vector3(0, groundedRaycastLength + controller.skinWidth, 0), groundedRaycastSize, groundLayermask);
+        applyDownforce = Physics.CheckSphere(transform.position - new Vector3(0, downforceCheckLength + controller.skinWidth, 0), downforceCheckSize, groundLayermask);
+
+        //grounded = Physics.SphereCast(new Ray(transform.position, Vector3.down), groundedRaycastSize, groundedRaycastLength + controller.skinWidth, groundLayermask);
+        //applyDownforce = Physics.SphereCast(new Ray(transform.position, Vector3.down), downforceCheckSize, downforceCheckLength + controller.skinWidth, groundLayermask);
     }
 
     private void UpdateSpeed()
     {
-        bool sprinting = Input.GetKey(Inputs.Sprint);
         float airMultiplier = grounded ? 1f : movementProfile.airSpeedMultiplier;
         WeaponProfile currentProfile = Weapons.GetProfile(player.currentWeapon);
 
-        float baseSpeed = sprinting && Moving ? movementProfile.runningSpeed : movementProfile.walkingSpeed;
+        float baseSpeed = Sprinting && Moving ? movementProfile.runningSpeed : movementProfile.walkingSpeed;
         float desiredSpeed = baseSpeed * airMultiplier * currentProfile.SpeedMultiplier;
 
-        float baseJump = sprinting && Moving ? movementProfile.runningJumpHeight : movementProfile.walkingJumpHeight;
+        float baseJump = Sprinting && Moving ? movementProfile.runningJumpHeight : movementProfile.walkingJumpHeight;
         float desiredJump = baseJump * currentProfile.JumpMultiplier;
 
         currentSpeed = Mathf.Lerp(currentSpeed, desiredSpeed, Time.deltaTime * speedChangeSmoothing);

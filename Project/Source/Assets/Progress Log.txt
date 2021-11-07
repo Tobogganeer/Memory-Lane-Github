@@ -56,3 +56,23 @@ Day 9: Oct 6
 	Started scripting for weapons, instead of just animation players
 	Added very sus kaleb sounds for guns firing
 }
+
+Day 10: Oct 9?
+{
+	Worked on behaviour tree
+}
+
+Day 11: Oct 13
+{
+	Toying with ragdolls
+	Reverting to hard-coded ai
+	Removed mag size from ammo counter
+}
+
+Day 12: Oct 28
+{
+	Haven't updated in a while
+	Weapon ballistics and damage are in
+	Enemies can move and die and attack
+	Camera shake on shot
+}

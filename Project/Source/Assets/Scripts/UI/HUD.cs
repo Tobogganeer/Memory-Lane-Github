@@ -21,6 +21,7 @@ public class HUD : MonoBehaviour
 
     public static void SetAmmoCounterText(int lhs, int rhs, int extra)
     {
-        instance.ammoCounter.text = lhs + " / " + rhs + " - " + extra;
+        //instance.ammoCounter.text = lhs + " / " + rhs + " - " + extra;
+        instance.ammoCounter.text = lhs + " / " + extra;
     }
 }

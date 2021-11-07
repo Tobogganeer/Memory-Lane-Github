@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
 public class SceneManager : MonoBehaviour
 {
@@ -37,7 +38,12 @@ public class SceneManager : MonoBehaviour
             return;
         }
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene(scene);
+        UnitySceneManager.LoadScene(scene);
+    }
+
+    public static void ReloadCurrentLevel()
+    {
+        UnitySceneManager.LoadScene(UnitySceneManager.GetActiveScene().buildIndex);
     }
 }
 

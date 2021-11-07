@@ -34,71 +34,83 @@ public enum Level
     Cove
 }
 
-//public enum SurfaceType : byte
-//{
-//    NONE,
-//    ITEM,
-//    LADDER,
-//    CONCRETE,
-//    BRICK,
-//    ROCK,
-//    BARREL,
-//    CHAINLINK,
-//    METAL,
-//    METAL_BOX,
-//    METAL_GRATE,
-//    METAL_PANEL,
-//    METAL_VENT,
-//    METAL_VEHICLE,
-//    METAL_SMALL_PROP,
-//    WOOD,
-//    WOOD_CRATE,
-//    WOOD_PLANK,
-//    WOOD_PANEL,
-//    WOOD_SOLID,
-//    DIRT,
-//    GRASS,
-//    GRAVEL,
-//    MUD,
-//    SAND,
-//    WATER,
-//    WATER_WADE,
-//    WATER_PUDDLE,
-//    ICE,
-//    SNOW,
-//    FOLIAGE,
-//    FLESH,
-//    ASPHALT,
-//    GLASS,
-//    TILE,
-//    PAPER,
-//    CARDBOARD,
-//    PLASTER,
-//    PLASTIC,
-//    PLASTIC_BARREL,
-//    RUBBER,
-//    TIRE,
-//    CARPET,
-//    CEILING,
-//    POTTERY
-//}
-//
-//public enum SurfaceFootstepType : byte
-//{
-//    DEFAULT_CONCRETE,
-//    WOOD,
-//    WOOD_CRATE,
-//    RUBBER,
-//    SNOW,
-//    DIRT,
-//    GRASS,
-//    MUD,
-//    GLASS_TILE,
-//    METAL,
-//    METAL_GRATE,
-//    METAL_CHAINLINK,
-//    WATER
-//}
+public enum SurfaceType : byte
+{
+    None,
+    Default,
+    Item,
+    Ladder,
+    Concrete,
+    Brick,
+    Rock,
+    Barrel,
+    Chainlink,
+    Metal,
+    MetalBox,
+    MetalGrate,
+    MetalPanel,
+    MetalVent,
+    MetalVehicle,
+    MetalSmallProp,
+    Wood,
+    WoodCrate,
+    WoodPlank,
+    WoodPanel,
+    WoodSolid,
+    Dirt,
+    Grass,
+    Gravel,
+    Mud,
+    Sand,
+    Water,
+    WaterWade,
+    WaterPuddle,
+    Ice,
+    Snow,
+    Foliage,
+    Flesh,
+    Asphalt,
+    Glass,
+    Tile,
+    Paper,
+    Cardboard,
+    Plaster,
+    Plastic,
+    PlasticBarrel,
+    Rubber,
+    Tire,
+    Carpet,
+    Ceiling,
+    Pottery
+}
+
+public enum SurfaceFootstepType : byte
+{
+    None,
+    DefaultConcrete,
+    Wood,
+    WoodCrate,
+    Rubber,
+    Snow,
+    Dirt,
+    Grass,
+    Mud,
+    GlassTile,
+    Metal,
+    MetalGrate,
+    MetalChainlink,
+    MetalHollow,
+    Water
+}
+
+public enum HitboxRegion
+{
+    Chest,
+    Abdomen,
+    Arms,
+    Legs,
+    Head
+}
 
 #endregion
 
@@ -115,7 +127,8 @@ public enum AudioArray
     Fire_MK_X,
     Fire_Molkor,
     Fire_GR3_N,
-    Fire_XRM
+    Fire_XRM,
+    Hitmarker
 }
 
 public enum PooledObject
@@ -123,13 +136,10 @@ public enum PooledObject
     AudioSource
 }
 
-//public enum HitEffect : byte
-//{
-//    PLAYER_BLOOD,
-//    PLAYER_SPARKS,
-//    WALL_ROCK,
-//    METAL,
-//    BARREL
-//}
+public enum VisualEffect
+{
+    None,
+    Explosion
+}
 
 #endregion

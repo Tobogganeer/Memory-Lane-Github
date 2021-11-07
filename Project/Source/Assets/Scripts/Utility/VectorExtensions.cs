@@ -21,6 +21,16 @@ public static class VectorExtensions
 		return new Vector2(v.x, v.y);
 	}
 
+	/// <summary>
+	/// Returns this Vector2 as a Vector3 with the y value converted to z
+	/// </summary>
+	/// <param name="v"></param>
+	/// <returns></returns>
+	public static Vector3 XYToXZ(this Vector2 v)
+	{
+		return new Vector3(v.x, 0, v.y);
+	}
+
 	public static Vector3 WithX(this Vector3 v, float x)
 	{
 		return new Vector3(x, v.y, v.z);
@@ -84,6 +94,11 @@ public static class VectorExtensions
 
 		return to_x * to_x + to_y * to_y + to_z * to_z;
 	}
+
+	public static float Distance(this Vector3 from, Vector3 to)
+    {
+		return Vector3.Distance(from, to);
+    }
 
 	public static Vector3 Clamp(this Vector3 v, Vector3 min, Vector3 max)
     {

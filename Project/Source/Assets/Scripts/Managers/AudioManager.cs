@@ -33,7 +33,7 @@ public class AudioManager : MonoBehaviour
     public AudioClips[] audioClips;
     private static AudioClip nullClip;
 
-    public static void Play(AudioArray sound, Vector3 position, Transform parent, float maxDistance = 10, float volume = 1, float minPitch = 0.85f, float maxPitch = 1.10f)
+    public static void Play(AudioArray sound, Vector3 position, Transform parent = null, float maxDistance = 10, float volume = 1, float minPitch = 0.85f, float maxPitch = 1.10f)
     {
         if (!clips.ContainsKey(sound) || clips[sound].Length == 0)
         {
@@ -46,7 +46,7 @@ public class AudioManager : MonoBehaviour
         Play(clips[sound][clip], position, parent, maxDistance, volume, minPitch, maxPitch);
     }
 
-    public static void Play(AudioClip sound, Vector3 position, Transform parent, float maxDistance = 10, float volume = 1, float minPitch = 0.85f, float maxPitch = 1.10f)
+    public static void Play(AudioClip sound, Vector3 position, Transform parent = null, float maxDistance = 10, float volume = 1, float minPitch = 0.85f, float maxPitch = 1.10f)
     {
         //AudioSource source = Instantiate(instance.audioSourcePrefab, position, Quaternion.identity, parent).GetComponent<AudioSource>();
         GameObject sourceObj = ObjectPoolManager.GetObject(PooledObject.AudioSource);

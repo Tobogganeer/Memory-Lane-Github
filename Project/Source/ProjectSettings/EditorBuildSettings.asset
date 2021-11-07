@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Memory Lane.unity
+    guid: dbfdef81b61537a42949026ca3d761fd
+  - enabled: 1
     path: Assets/Scenes/Copyfrom.unity
     guid: 1ace9200320dd994e8bf0c3172304aee
   m_configObjects: {}
