@@ -122,4 +122,13 @@ public static class VectorExtensions
     {
 		return new Vector3(Mathf.Abs(v.x), Mathf.Abs(v.y), Mathf.Abs(v.z));
     }
+
+	public static Vector3 InverseLerp(this Vector3 v, float a, float b)
+    {
+		return new Vector3(
+			Mathf.InverseLerp(a, b, v.x),
+			Mathf.InverseLerp(a, b, v.y),
+			Mathf.InverseLerp(a, b, v.z)
+			);
+    }
 }
