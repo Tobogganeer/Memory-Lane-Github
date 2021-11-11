@@ -37,7 +37,7 @@ public class Ballistics
                 penData.AddEntry(frontHit.point, frontHit.normal, currentFalloff);
                 penData.AddExit(backHit.point, backHit.normal, currentFalloff);
 
-                currentFalloff = settings.CalculateFalloff(currentFalloff, penData.penetrationThickness);
+                currentFalloff = settings.CalculateFalloff(currentFalloff, penData.penetrationThickness, backHit.collider);
                 penData.exitFalloff = currentFalloff;
 
                 allPenetrationData.Add(penData);
@@ -66,7 +66,7 @@ public class Ballistics
                             penData.AddEntry(frontHit.point, frontHit.normal, currentFalloff);
                             penData.AddExit(backHit.point, backHit.normal, currentFalloff);
 
-                            currentFalloff = settings.CalculateFalloff(currentFalloff, penData.penetrationThickness);
+                            currentFalloff = settings.CalculateFalloff(currentFalloff, penData.penetrationThickness, backHit.collider);
                             penData.exitFalloff = currentFalloff;
 
                             allPenetrationData.Add(penData);
@@ -129,7 +129,7 @@ public class Ballistics
 
             if (data.penetratedCollider.TryGetComponent(out IBulletDamagable damagable))
             {
-                damagable.TakeBulletDamage(calibratedDamage);
+                damagable.TakeBulletDamage(new DamageDetails(calibratedDamage, result.origin, result.direction));
                 appliedDamage = true;
                 //Draw.DrawText(data.entryPoint, calibratedDamage.ToString(), Color.blue, 24, 1f, true);
             }
@@ -139,9 +139,12 @@ public class Ballistics
                 data.penetratedCollider.attachedRigidbody.AddForceAtPosition(-data.entryNormal * rbForce, data.entryPoint, ForceMode.Impulse);
             }
 
+            // Raycasts dont hit ai layer
             if (data.penetratedCollider.TryGetComponent(out RangedAI ai))
             {
-                ai.AddForceToRagdoll(-data.entryNormal * rbForce * 2, ForceMode.Impulse);
+                rbForce *= 15;
+                //ai.AddForceToRagdoll(-data.entryNormal * rbForce, ForceMode.Impulse);
+                ai.AddForceToRagdoll(result.direction * rbForce, ForceMode.Impulse);
             }
             // Maybe change to GetComponents<>()?
         }
@@ -211,9 +214,17 @@ public class Ballistics
         {
             PenetrationData data = result.penetrations[i];
 
-            if (data.entered && data.penetratedCollider.GetSurface(out Surface surface)) surface.SpawnFX(data.entryPoint, data.entryNormal);
+            if (data.entered && data.penetratedCollider.GetSurface(out Surface surface))
+            {
+                surface.SpawnFX(data.entryPoint, data.entryNormal);
+            }
 
-            if (data.exited && data.penetratedCollider.GetSurface(out surface)) surface.SpawnFX(data.exitPoint, data.exitNormal);
+            if (data.exited && data.penetratedCollider.GetSurface(out surface))
+            {
+                surface.SpawnFX(data.exitPoint, data.exitNormal);
+                // Will have hit one shots
+                //surface.PlayHitSound(data.exitPoint)
+            }
         }
     }
 
@@ -342,9 +353,13 @@ public struct BallisticsSettings
     //    return Mathf.Lerp(0, GetMaxPenetrationDepth(), currentFalloff);
     //}
 
-    public float CalculateFalloff(float currentFalloff, float penetrationDepth)
+    public float CalculateFalloff(float currentFalloff, float penetrationDepth, Collider col)
     {
         float fractionOfTotalPen = Mathf.InverseLerp(0, GetMaxPenetrationDepth(), penetrationDepth);
+
+        if (col && col.GetSurface(out Surface surface)) fractionOfTotalPen *= surface.GetHardness();
+        else fractionOfTotalPen *= SurfaceHardnesses.DEFAULT_HARDNESS;
+
         return Mathf.Clamp01(currentFalloff - fractionOfTotalPen);
     }
 }

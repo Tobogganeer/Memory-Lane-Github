@@ -17,6 +17,7 @@ public class AIPointManager : MonoBehaviour
     private const int RANDOM_ATTEMPTS = 5;
 
     public bool drawGizmos = true;
+    public float gizmoSize = 0.3f;
 
     public static Vector3 GetPointOfInterest(Vector3 currentPosition) // Maybe pass in min distance?
     {
@@ -38,12 +39,12 @@ public class AIPointManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (pointsOfInterest == null || drawGizmos) return;
+        if (pointsOfInterest == null || !drawGizmos) return;
 
         Gizmos.color = Color.yellow;
         foreach (Transform transform in pointsOfInterest)
         {
-            Gizmos.DrawSphere(transform.position, 0.2f);
+            Gizmos.DrawSphere(transform.position, gizmoSize);
         }
     }
 }

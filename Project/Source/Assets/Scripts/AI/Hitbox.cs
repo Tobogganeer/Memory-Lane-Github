@@ -66,13 +66,15 @@ public class Hitbox : MonoBehaviour, IBulletDamagable, IExplosionDamagable
     }
 
 
-    public void TakeBulletDamage(float amount)
+    public void TakeBulletDamage(DamageDetails details)
     {
-        damagable.TakeDamage(GetBulletDamageMultiplier() * amount);
+        details.amount *= GetBulletDamageMultiplier();
+        damagable.TakeDamage(details);
     }
 
-    public void TakeExplosiveDamage(float amount)
+    public void TakeExplosiveDamage(DamageDetails details)
     {
-        damagable.TakeDamage(GetExplosiveDamageMultiplier() * amount);
+        details.amount *= GetExplosiveDamageMultiplier();
+        damagable.TakeDamage(details);
     }
 }

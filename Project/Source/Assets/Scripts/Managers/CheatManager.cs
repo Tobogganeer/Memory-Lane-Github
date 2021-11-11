@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class CheatManager : MonoBehaviour
 {
-    public static bool InfiniteAmmo = true;
+    public static bool InfiniteAmmo = false;
 }

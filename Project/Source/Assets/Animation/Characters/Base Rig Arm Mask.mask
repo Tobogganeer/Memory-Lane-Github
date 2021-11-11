@@ -11,6 +11,8 @@ AvatarMask:
   m_Elements:
   - m_Path: 
     m_Weight: 1
+  - m_Path: AK74M
+    m_Weight: 0
   - m_Path: Balaclava
     m_Weight: 0
   - m_Path: Base Mesh
@@ -21,15 +23,7 @@ AvatarMask:
     m_Weight: 0
   - m_Path: Base Rig/root/foot_ik.L
     m_Weight: 0
-  - m_Path: Base Rig/root/foot_ik.L/foot.L
-    m_Weight: 0
-  - m_Path: Base Rig/root/foot_ik.L/foot.L/toe.L
-    m_Weight: 0
   - m_Path: Base Rig/root/foot_ik.R
-    m_Weight: 0
-  - m_Path: Base Rig/root/foot_ik.R/foot.R
-    m_Weight: 0
-  - m_Path: Base Rig/root/foot_ik.R/foot.R/toe.R
     m_Weight: 0
   - m_Path: Base Rig/root/foot_ik_pole.L
     m_Weight: 0
@@ -43,11 +37,19 @@ AvatarMask:
     m_Weight: 0
   - m_Path: Base Rig/root/hips/hip.L/thigh.L/lower_leg.L
     m_Weight: 0
+  - m_Path: Base Rig/root/hips/hip.L/thigh.L/lower_leg.L/foot.L
+    m_Weight: 0
+  - m_Path: Base Rig/root/hips/hip.L/thigh.L/lower_leg.L/foot.L/toe.L
+    m_Weight: 0
   - m_Path: Base Rig/root/hips/hip.R
     m_Weight: 0
   - m_Path: Base Rig/root/hips/hip.R/thigh.R
     m_Weight: 0
   - m_Path: Base Rig/root/hips/hip.R/thigh.R/lower_leg.R
+    m_Weight: 0
+  - m_Path: Base Rig/root/hips/hip.R/thigh.R/lower_leg.R/foot.R
+    m_Weight: 0
+  - m_Path: Base Rig/root/hips/hip.R/thigh.R/lower_leg.R/foot.R/toe.R
     m_Weight: 0
   - m_Path: Base Rig/root/hips/spine_base
     m_Weight: 1
@@ -62,6 +64,16 @@ AvatarMask:
   - m_Path: Base Rig/root/hips/spine_base/spine_mid/spine_top/hand_ik.L
     m_Weight: 1
   - m_Path: Base Rig/root/hips/spine_base/spine_mid/spine_top/hand_ik.R
+    m_Weight: 1
+  - m_Path: Base Rig/root/hips/spine_base/spine_mid/spine_top/hand_ik.R/weapon_main
+    m_Weight: 1
+  - m_Path: Base Rig/root/hips/spine_base/spine_mid/spine_top/hand_ik.R/weapon_main/weapon_bolt
+    m_Weight: 1
+  - m_Path: Base Rig/root/hips/spine_base/spine_mid/spine_top/hand_ik.R/weapon_main/weapon_extra_1
+    m_Weight: 1
+  - m_Path: Base Rig/root/hips/spine_base/spine_mid/spine_top/hand_ik.R/weapon_main/weapon_extra_2
+    m_Weight: 1
+  - m_Path: Base Rig/root/hips/spine_base/spine_mid/spine_top/hand_ik.R/weapon_main/weapon_magazine
     m_Weight: 1
   - m_Path: Base Rig/root/hips/spine_base/spine_mid/spine_top/neck
     m_Weight: 1
@@ -144,8 +156,6 @@ AvatarMask:
   - m_Path: Base Rig/root/hips/spine_base/spine_mid/spine_top/shoulder.R/upper_arm.R/forearm.R/hand.R/thumb_hand.R/thumb_base.R/thumb_mid.R
     m_Weight: 1
   - m_Path: Boots
-    m_Weight: 0
-  - m_Path: Capsule Mesh
     m_Weight: 0
   - m_Path: Gloves
     m_Weight: 0

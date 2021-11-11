@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IBulletDamagable
 {
-    public void TakeBulletDamage(float damage);
+    public void TakeBulletDamage(DamageDetails details);
 }

@@ -1,4 +1,8 @@
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
+//#define DEBUG_DRAW
+//#endif
+
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
 #define DEBUG_DRAW
 #endif
 

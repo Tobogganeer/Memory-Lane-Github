@@ -129,7 +129,7 @@ MonoBehaviour:
   force: 80
   explodeTime: 3
   explosionForce: 20
-  explosionRadius: 2.5
+  explosionRadius: 4.5
   upwardsMult: 1
   damage: 75
   enemyTag: Enemy

@@ -21,6 +21,18 @@ public class FPSCamera : MonoBehaviour
     public float sensitivity = 3;
     public float maxVerticalRotation = 90;
 
+    [Space]
+    public float defaultHeight = 0.75f;
+    public float crouchingHeight = 0.3f;
+    public Transform topLevelCameraHolder;
+    public float crouchCamMoveSpeed = 5;
+
+    [Space]
+    public float recoilDecaySpeed = 10;
+    public float recoilSmoothSpeed = 5;
+    private static float currentRecoil;
+    private static float desiredRecoil;
+
     int warningCounter = 0; // To not spam warnings in the console every frame
 
     private void Start()
@@ -32,6 +44,19 @@ public class FPSCamera : MonoBehaviour
 
     private void Update()
     {
+        //desiredRecoil = Mathf.MoveTowards(desiredRecoil, 0, Time.deltaTime * recoilDecaySpeed);
+        desiredRecoil = Mathf.Lerp(desiredRecoil, 0, Time.deltaTime * recoilDecaySpeed);
+        currentRecoil = Mathf.Lerp(currentRecoil, desiredRecoil, Time.deltaTime * recoilSmoothSpeed);
+
+        if (desiredRecoil < 0) desiredRecoil = 0;
+
+        if (topLevelCameraHolder != null)
+        {
+            float height = Player.Movement.Crouched ? crouchingHeight : defaultHeight;
+            Vector3 pos = topLevelCameraHolder.localPosition;
+            topLevelCameraHolder.localPosition = Vector3.Lerp(pos, pos.WithY(height), Time.deltaTime * crouchCamMoveSpeed);
+        }
+
         if (playerBody == null || verticalTransform == null)
         {
             warningCounter++;
@@ -50,8 +75,10 @@ public class FPSCamera : MonoBehaviour
         // Rotates the body horizontally
 
         yRotation = Mathf.Clamp(yRotation - y * sensitivity, -maxVerticalRotation, maxVerticalRotation);
+        float clampedRotWithRecoil = Mathf.Clamp(yRotation - currentRecoil, -maxVerticalRotation, maxVerticalRotation);
+
         // Clamps the Y rotation so you can only look straight up or down, not backwards
-        verticalTransform.localRotation = Quaternion.Euler(new Vector3(yRotation, 0));
+        verticalTransform.localRotation = Quaternion.Euler(new Vector3(clampedRotWithRecoil, 0));
         // Sets the verticalTransforms rotation
         // Cannot call the Rotate() method on verticalTransform because trying to clamp the y value
         // makes Euler roll in his grave and messes it up.
@@ -77,5 +104,10 @@ public class FPSCamera : MonoBehaviour
     public static void Shake(ShakePreset preset)
     {
         Shaker.ShakeAllSeparate(preset);
+    }
+
+    public static void AddRecoil(float amount)
+    {
+        desiredRecoil += amount;
     }
 }

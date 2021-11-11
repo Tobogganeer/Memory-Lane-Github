@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class WeaponSway : MonoBehaviour
 {
-    public Player player;
-
     public Transform mouseSwayObj;
     public Transform movementSwayObj;
     public Transform movementBobObj;
@@ -35,6 +33,8 @@ public class WeaponSway : MonoBehaviour
 
     public static event System.Action<Foot, float> OnFootstep;
     private Foot currentFoot = Foot.Right;
+
+    private Player player => Player.instance;
 
     private void Update()
     {
@@ -103,18 +103,18 @@ public class WeaponSway : MonoBehaviour
 
     private void CalculateFootstep(float sinValue, float magnitude)
     {
-        if (magnitude == 0 || !player.movement.grounded)
+        if (magnitude < 1f || !player.movement.grounded)
         {
             time = 0;
             currentFoot = Foot.Right;
         }
 
-        if (sinValue > 0.9f && currentFoot == Foot.Right && player.movement.grounded)
+        if (sinValue > 0.5f && currentFoot == Foot.Right && player.movement.grounded)
         {
             OnFootstep?.Invoke(Foot.Right, magnitude);
             currentFoot = Foot.Left;
         }
-        else if (sinValue < -0.9f && currentFoot == Foot.Left && player.movement.grounded)
+        else if (sinValue < -0.5f && currentFoot == Foot.Left && player.movement.grounded)
         {
             OnFootstep?.Invoke(Foot.Left, magnitude);
             currentFoot = Foot.Right;

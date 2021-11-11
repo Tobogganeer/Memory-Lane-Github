@@ -47,7 +47,11 @@ public class WeaponManager : MonoBehaviour
 
     private void DisableAll()
     {
-        if (currentWeapon != null) currentWeapon.OnHolster();
+        if (currentWeapon != null)
+        {
+            currentWeapon.OnHolster();
+            Timer.ClearTimers(WeaponBase.WEAPON_RELOAD_TIMER_ID);
+        }
 
         p3k.gameObject.SetActive(false);
         nateva.gameObject.SetActive(false);

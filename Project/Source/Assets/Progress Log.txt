@@ -76,3 +76,9 @@ Day 12: Oct 28
 	Enemies can move and die and attack
 	Camera shake on shot
 }
+
+Day 13: Nov 6
+{
+	BTW, work log is kinda dead
+	Added soldier enemy model
+}

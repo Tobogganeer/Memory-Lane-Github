@@ -147,5 +147,25 @@ public static class SurfaceExtensions
         SurfaceFX.SpawnFX(surface.surfaceType, position, rotation, surface.transform);
     }
 
+    public static void PlayFootstep(this Surface surface, Vector3 position, Foot foot)
+    {
+        SurfaceFX.PlayFootstepSound(surface.GetFootstepType(), position, foot);
+    }
+
+    public static void PlayFootstep(this SurfaceType surfaceType, Vector3 position, Foot foot)
+    {
+        SurfaceFX.PlayFootstepSound(surfaceType.GetFootstepType(), position, foot);
+    }
+
+    public static void PlayHitSound(this Surface surface, Vector3 position, Transform parent = null, float maxDistance = 10, float volume = 1, float minPitch = 0.85f, float maxPitch = 1.10f)
+    {
+        SurfaceFX.PlayHitSound(surface.surfaceType, position, parent, maxDistance, volume, minPitch, maxPitch);
+    }
+
+    public static void PlayHitSound(this SurfaceType surfaceType, Vector3 position, Transform parent = null, float maxDistance = 10, float volume = 1, float minPitch = 0.85f, float maxPitch = 1.10f)
+    {
+        SurfaceFX.PlayHitSound(surfaceType, position, parent, maxDistance, volume, minPitch, maxPitch);
+    }
+
     //public static void PlayAudio(this Surface surface, Vector3 position)
 }

@@ -4,3 +4,6 @@ Fix weapon sway in builds
 Enemies alerted when shot
 Recoil
 Surface audio
+Damage falloff with distance
+Change reload sounds to reload events, include camera shake
+// ^^^ Will be adding camera movement to anims, so no need

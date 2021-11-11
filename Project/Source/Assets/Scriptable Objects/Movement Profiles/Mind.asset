@@ -15,8 +15,11 @@ MonoBehaviour:
   walkingSpeed: 3.5
   runningSpeed: 6
   airSpeedMultiplier: 1.5
+  crouchSpeed: 2
+  crouchAirSpeedMultiplier: 2
   gravity: 10
   walkingJumpHeight: 3.5
   runningJumpHeight: 4.5
+  crouchJumpHeight: 3
   groundAcceleration: 12
   airAcceleration: 1.4

@@ -18,7 +18,7 @@ public enum WeaponType
 {
     P3K, // Pistol
     Nateva, // Revolver
-    MK_X, // Marksman Rifle
+    FNAL, // Marksman Rifle
     Molkor, // LMG
     GR3_N, // Grenade Launcher
     XRM, // Shotgun
@@ -124,11 +124,16 @@ public enum AudioArray
     Jump,
     Fire_P3K,
     Fire_Nateva,
-    Fire_MK_X,
+    Fire_FNAL,
     Fire_Molkor,
     Fire_GR3_N,
     Fire_XRM,
-    Hitmarker
+    Hitmarker,
+    Explosion,
+    Cachunk,
+    Chck,
+    Shck,
+    Chook
 }
 
 public enum PooledObject

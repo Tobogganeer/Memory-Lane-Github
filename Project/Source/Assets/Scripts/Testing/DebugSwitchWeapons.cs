@@ -29,7 +29,7 @@ public class DebugSwitchWeapons : MonoBehaviour
         {
             DisableAll();
             mk_x.SetActive(true);
-            Player.instance.currentWeapon = WeaponType.MK_X;
+            Player.instance.currentWeapon = WeaponType.FNAL;
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IExplosionDamagable
 {
-    public void TakeExplosiveDamage(float damage);
+    public void TakeExplosiveDamage(DamageDetails details);
 }

@@ -11,12 +11,13 @@ public class WeaponProfile : ScriptableObject
     [SerializeField] private float bobSpeedMultiplier = 1;
     [SerializeField] private float bobAmountMultiplier = 1;
     [SerializeField] private MilkShake.ShakePreset camShakePreset;
+    [SerializeField] private float fireRateRPM;
 
     [Header("Following doesn't apply to GR3-N")]
     [SerializeField] private BallisticsSettings ballisticsSettings;
     [SerializeField] private float maxRange;
     [SerializeField] private float baseDamage;
-    [SerializeField] private float innaccuracy;
+    [SerializeField] private AccuracyProfile accuracyProfile;
     [Range(0f, 1f)]
     [SerializeField] private float tracerProbability;
     [SerializeField] private LayerMask layermask;
@@ -28,11 +29,12 @@ public class WeaponProfile : ScriptableObject
     public float BobSpeedMultiplier => bobSpeedMultiplier;
     public float BobAmountMultiplier => bobAmountMultiplier;
     public MilkShake.ShakePreset CamShakePreset => camShakePreset;
+    public float FireRateRPM => fireRateRPM;
 
     public BallisticsSettings BallisticsSettings => ballisticsSettings;
     public float MaxRange => maxRange;
     public float BaseDamage => baseDamage;
-    public float Innaccuracy => innaccuracy;
+    public AccuracyProfile AccuracyProfile => accuracyProfile;
     public float TracerProbability => tracerProbability;
     public LayerMask LayerMask => layermask;
     public float RBForce => rbForce;

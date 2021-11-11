@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6cdedd6c63920e49aff29d0fb78426d, type: 3}
+  m_Name: FNAL
+  m_EditorClassIdentifier: 
+  type: 2
+  speedMultiplier: 0.9
+  jumpMultiplier: 0.95
+  bobSpeedMultiplier: 0.9
+  bobAmountMultiplier: 1.2
+  camShakePreset: {fileID: 11400000, guid: 5530723682137824c852b2576269b491, type: 2}
+  fireRateRPM: 380
+  ballisticsSettings:
+    penetrationPower: 0.5
+    maxPenetrations: 6
+    falloff: 1
+  maxRange: 250
+  baseDamage: 32
+  accuracyProfile:
+    crouchingInnaccuracy: 0.2
+    standingInnaccuracy: 0.55
+    walkingInnaccuracy: 1.6
+    runningInnaccuracy: 4.2
+  tracerProbability: 0
+  layermask:
+    serializedVersion: 2
+    m_Bits: 2561
+  rbForce: 9

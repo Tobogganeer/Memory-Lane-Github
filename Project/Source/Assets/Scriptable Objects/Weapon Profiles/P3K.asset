@@ -18,13 +18,18 @@ MonoBehaviour:
   bobSpeedMultiplier: 1
   bobAmountMultiplier: 1
   camShakePreset: {fileID: 11400000, guid: 3fba06dac8e85e84289fd45c406097e3, type: 2}
+  fireRateRPM: 600
   ballisticsSettings:
     penetrationPower: 0.35
     maxPenetrations: 5
     falloff: 1
   maxRange: 250
-  baseDamage: 28
-  innaccuracy: 3
+  baseDamage: 19
+  accuracyProfile:
+    crouchingInnaccuracy: 0.4
+    standingInnaccuracy: 1.2
+    walkingInnaccuracy: 1.8
+    runningInnaccuracy: 3.5
   tracerProbability: 1
   layermask:
     serializedVersion: 2

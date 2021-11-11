@@ -41,8 +41,8 @@ public class RagdollBone : MonoBehaviour
         rb.isKinematic = false;
         //collider.enabled = true;
 
-        rb.velocity = velocity;
-        rb.angularVelocity = angularVelocity;
+        rb.velocity = velocity * Random.Range(0.5f, 2.0f);
+        rb.angularVelocity = angularVelocity * Random.Range(0.5f, 2.0f);
     }
 
     public void Disable()

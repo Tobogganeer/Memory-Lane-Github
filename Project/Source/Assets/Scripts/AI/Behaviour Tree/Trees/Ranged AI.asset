@@ -289,5 +289,5 @@ MonoBehaviour:
     distanceToCheck: {x: 0, y: 0, z: 0}
     destination: {x: 0, y: 0, z: 0}
   ai: {fileID: 0}
-  description: 
+  description: Waits at the destination
   duration: 1

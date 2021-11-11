@@ -52,6 +52,11 @@ public class AudioManager : MonoBehaviour
         GameObject sourceObj = ObjectPoolManager.GetObject(PooledObject.AudioSource);
         if (sourceObj != null)
         {
+            if (parent != null && !parent.gameObject.activeInHierarchy)
+            {
+                sourceObj.SetActive(false);
+                return;
+            }
             sourceObj.transform.SetParent(parent);
             sourceObj.transform.position = position;
 

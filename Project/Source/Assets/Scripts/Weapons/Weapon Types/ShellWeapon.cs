@@ -10,6 +10,7 @@ public class ShellWeapon : WeaponBase
     public int magazineSize;
     public int reserveAmmo;
     private int currentMagazineAmmo;
+    private int currentReserveAmmo;
 
     [Space]
     public float doubleShellReloadTime = 1;
@@ -24,8 +25,6 @@ public class ShellWeapon : WeaponBase
     [Space]
     public float numPellets = 7;
 
-    [Space]
-    public float fireRateRPM;
     private float secondsPerShot;
 
     private float reloadTimer;
@@ -41,6 +40,13 @@ public class ShellWeapon : WeaponBase
 
     public Transform tracersFrom;
 
+    public ReloadAudio[] singleShellAudio;
+    public ReloadAudio[] doubleShellAudio;
+
+    public ReloadAudio[] reloadStartAudio;
+    public ReloadAudio[] reloadEndAudio;
+    public ReloadAudio[] reloadEndEmptyAudio;
+
     //public float GetTimePerShot()
     //{
     //    if (secondsPerShot == 0)
@@ -54,7 +60,8 @@ public class ShellWeapon : WeaponBase
     private void Start()
     {
         currentMagazineAmmo = magazineSize;
-        secondsPerShot = 1f / (fireRateRPM / 60f);
+        currentReserveAmmo = reserveAmmo;
+        secondsPerShot = 1f / (Weapons.GetProfile(type).FireRateRPM / 60f);
 
         UpdateAmmoText();
     }
@@ -74,7 +81,7 @@ public class ShellWeapon : WeaponBase
         if (drawTimer > 0)
         {
             drawTimer -= Time.deltaTime;
-            if (currentMagazineAmmo <= 0 && reserveAmmo > 0)
+            if (currentMagazineAmmo <= 0 && currentReserveAmmo > 0)
             {
                 wasEmptyReload = true;
                 StartReload();
@@ -103,7 +110,7 @@ public class ShellWeapon : WeaponBase
 
     public bool CanReload()
     {
-        return currentMagazineAmmo < magazineSize && reserveAmmo > 0 && reloadTimer <= 0 && drawTimer <= 0 && fireTimer <= 0 && reloadTransitionTimer <= 0;
+        return currentMagazineAmmo < magazineSize && currentReserveAmmo > 0 && reloadTimer <= 0 && drawTimer <= 0 && fireTimer <= 0 && reloadTransitionTimer <= 0;
     }
 
     public override void OnTryFire()
@@ -157,7 +164,7 @@ public class ShellWeapon : WeaponBase
 
         for (int i = 0; i < numPellets; i++)
         {
-            Vector3 fireDir = Ballistics.GetDirectionWithInnaccuracy(shootFrom.forward, profile.Innaccuracy);
+            Vector3 fireDir = Ballistics.GetDirectionWithInnaccuracy(shootFrom.forward, GetInnaccuracy());
 
             BallisticsResult result = Ballistics.Cast(shootFrom.position, fireDir, profile.MaxRange, profile.LayerMask, profile.BallisticsSettings);
             if (!result.empty)
@@ -236,14 +243,14 @@ public class ShellWeapon : WeaponBase
 
        int missingShells = magazineSize - currentMagazineAmmo;
        
-       if (missingShells == 0 || reserveAmmo == 0) return;
+       if (missingShells == 0 || currentReserveAmmo == 0) return;
        
-       if (missingShells >= 2 && reserveAmmo >= 2)
+       if (missingShells >= 2 && currentReserveAmmo >= 2)
        {
            ReloadDouble();
            return;
        }
-       else if (missingShells >= 1 && reserveAmmo >= 1)
+       else if (missingShells >= 1 && currentReserveAmmo >= 1)
        {
            ReloadSingle();
            return;
@@ -255,6 +262,8 @@ public class ShellWeapon : WeaponBase
         reloadTransitionTimer = reloadTransitionTime;
         transitioningIn = true;
         animationPlayer.ReloadStart();
+
+        PlayAudio(reloadStartAudio);
     }
 
     private void EndReload()
@@ -262,6 +271,8 @@ public class ShellWeapon : WeaponBase
         reloadTransitionTimer = reloadTransitionTime;
         transitioningIn = false;
         animationPlayer.ReloadFinish();
+
+        PlayAudio(reloadEndAudio);
     }
 
     private void EndReloadEmpty()
@@ -269,6 +280,8 @@ public class ShellWeapon : WeaponBase
         reloadTransitionTimer = reloadEmptyTransitionTime;
         transitioningIn = false;
         animationPlayer.ReloadFinishEmpty();
+
+        PlayAudio(reloadEndEmptyAudio);
     }
 
     private void ReloadSingle()
@@ -279,6 +292,7 @@ public class ShellWeapon : WeaponBase
 
         animationPlayer.ReloadSingle();
 
+        PlayAudio(singleShellAudio);
         //try
         //{
         //    PlayReloadAudio(player);
@@ -297,6 +311,7 @@ public class ShellWeapon : WeaponBase
 
         animationPlayer.ReloadDouble();
 
+        PlayAudio(doubleShellAudio);
         //try
         //{
         //    PlayReloadAudio(player);
@@ -313,24 +328,24 @@ public class ShellWeapon : WeaponBase
         {
             currentMagazineAmmo++;
             if (!CheatManager.InfiniteAmmo)
-                reserveAmmo--;
+                currentReserveAmmo--;
         }
         else if (lastReloadType == ShellReloadType.Double)
         {
             currentMagazineAmmo += 2;
             if (!CheatManager.InfiniteAmmo)
-                reserveAmmo -= 2;
+                currentReserveAmmo -= 2;
         }
 
         UpdateAmmoText();
 
         currentMagazineAmmo = Mathf.Min(currentMagazineAmmo, magazineSize);
-        reserveAmmo = Mathf.Max(reserveAmmo, 0);
+        currentReserveAmmo = Mathf.Max(currentReserveAmmo, 0);
         lastReloadType = ShellReloadType.None;
 
         int missingShells = magazineSize - currentMagazineAmmo;
 
-        if (tryingToCancelReload || missingShells == 0 || reserveAmmo == 0)
+        if (tryingToCancelReload || missingShells == 0 || currentReserveAmmo == 0)
         {
             if (wasEmptyReload) EndReloadEmpty();
             else EndReload();
@@ -340,12 +355,12 @@ public class ShellWeapon : WeaponBase
             return;
         }
 
-        if (missingShells >= 2 && reserveAmmo >= 2)
+        if (missingShells >= 2 && currentReserveAmmo >= 2)
         {
             ReloadDouble();
             return;
         }
-        else if (missingShells >= 1 && reserveAmmo >= 1)
+        else if (missingShells >= 1 && currentReserveAmmo >= 1)
         {
             ReloadSingle();
             return;
@@ -385,7 +400,21 @@ public class ShellWeapon : WeaponBase
 
     private void UpdateAmmoText()
     {
-        HUD.SetAmmoCounterText(currentMagazineAmmo, magazineSize, reserveAmmo);
+        HUD.SetAmmoCounterText(currentMagazineAmmo, magazineSize, currentReserveAmmo);
+    }
+
+    private float GetInnaccuracy()
+    {
+        AccuracyProfile profile = Weapons.GetProfile(type).AccuracyProfile;
+
+        float normalizedSpeed = Player.Movement.FromStillToMaxSpeed01;
+
+        if (Player.Movement.Crouched)
+            return Mathf.Lerp(profile.crouchingInnaccuracy, profile.standingInnaccuracy, normalizedSpeed);
+        else if (Player.Movement.Sprinting)
+            return Mathf.Lerp(profile.standingInnaccuracy, profile.runningInnaccuracy, normalizedSpeed);
+        else
+            return Mathf.Lerp(profile.standingInnaccuracy, profile.walkingInnaccuracy, normalizedSpeed);
     }
 
     private enum ShellReloadType
@@ -393,5 +422,11 @@ public class ShellWeapon : WeaponBase
         None,
         Single,
         Double
+    }
+
+    public void RefillAmmo()
+    {
+        currentReserveAmmo = reserveAmmo;
+        currentMagazineAmmo = magazineSize;
     }
 }

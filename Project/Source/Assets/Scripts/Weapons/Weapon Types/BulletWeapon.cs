@@ -10,6 +10,7 @@ public class BulletWeapon : WeaponBase
     public int magazineSize;
     public int reserveAmmo;
     private int currentMagazineAmmo;
+    private int currentReserveAmmo;
 
     [Space]
     public float reloadTime = 2f;
@@ -21,8 +22,6 @@ public class BulletWeapon : WeaponBase
     // VVV will change as ballistics model is updates (bullet pen, dropoff, accuracy etc)
     // Ballistics implemented
 
-    [Space]
-    public float fireRateRPM;
     private float secondsPerShot;
 
     private float reloadTimer;
@@ -30,6 +29,9 @@ public class BulletWeapon : WeaponBase
     private float drawTimer;
 
     public Transform tracersFrom;
+
+    public ReloadAudio[] reloadAudio;
+    public ReloadAudio[] reloadEmptyAudio;
 
     //public float GetTimePerShot()
     //{
@@ -44,7 +46,8 @@ public class BulletWeapon : WeaponBase
     private void Start()
     {
         currentMagazineAmmo = magazineSize;
-        secondsPerShot = 1f / (fireRateRPM / 60f);
+        currentReserveAmmo = reserveAmmo;
+        secondsPerShot = 1f / (Weapons.GetProfile(type).FireRateRPM / 60f);
 
         UpdateAmmoText();
     }
@@ -61,7 +64,7 @@ public class BulletWeapon : WeaponBase
         if (drawTimer > 0)
         {
             drawTimer -= Time.deltaTime;
-            if (currentMagazineAmmo <= 0 && reserveAmmo > 0)
+            if (currentMagazineAmmo <= 0 && currentReserveAmmo > 0 && reloadTimer <= 0)
                 ReloadEmpty();
         }
 
@@ -80,7 +83,7 @@ public class BulletWeapon : WeaponBase
 
     public bool CanReload()
     {
-        return currentMagazineAmmo < magazineSize && reserveAmmo > 0 && reloadTimer <= 0 && drawTimer <= 0 && fireTimer <= 0;
+        return currentMagazineAmmo < magazineSize && currentReserveAmmo > 0 && reloadTimer <= 0 && drawTimer <= 0 && fireTimer <= 0;
     }
 
     public override void OnTryFire()
@@ -129,7 +132,7 @@ public class BulletWeapon : WeaponBase
 
         WeaponProfile profile = Weapons.GetProfile(type);
 
-        Vector3 fireDir = Ballistics.GetDirectionWithInnaccuracy(shootFrom.forward, profile.Innaccuracy);
+        Vector3 fireDir = Ballistics.GetDirectionWithInnaccuracy(shootFrom.forward, GetInnaccuracy());
 
         BallisticsResult result = Ballistics.Cast(shootFrom.position, fireDir, profile.MaxRange, profile.LayerMask, profile.BallisticsSettings);
         if (!result.empty)
@@ -148,6 +151,7 @@ public class BulletWeapon : WeaponBase
         PlayFireSound();
 
         FPSCamera.Shake(profile.CamShakePreset);
+        FPSCamera.AddRecoil(5);
 
         if (Random.Range(0f, 1f) < profile.TracerProbability)
             FX.SpawnTracer(tracersFrom.position, fireDir, ref result);
@@ -200,6 +204,7 @@ public class BulletWeapon : WeaponBase
 
         animationPlayer.Reload();
 
+        PlayAudio(reloadAudio);
         //try
         //{
         //    PlayReloadAudio(player);
@@ -216,6 +221,7 @@ public class BulletWeapon : WeaponBase
 
         animationPlayer.ReloadEmpty();
 
+        PlayAudio(reloadEmptyAudio);
         //try
         //{
         //    PlayReloadAudio(player);
@@ -230,16 +236,16 @@ public class BulletWeapon : WeaponBase
     {
         int bulletsNeeded = magazineSize - currentMagazineAmmo;
 
-        if (bulletsNeeded <= reserveAmmo)
+        if (bulletsNeeded <= currentReserveAmmo)
         {
             currentMagazineAmmo = magazineSize;
             if (!CheatManager.InfiniteAmmo)
-                reserveAmmo -= bulletsNeeded;
+                currentReserveAmmo -= bulletsNeeded;
         }
         else
         {
-            currentMagazineAmmo += reserveAmmo;
-            reserveAmmo = 0;
+            currentMagazineAmmo += currentReserveAmmo;
+            currentReserveAmmo = 0;
         }
 
         if (currentMagazineAmmo > magazineSize)
@@ -252,6 +258,26 @@ public class BulletWeapon : WeaponBase
 
     private void UpdateAmmoText()
     {
-        HUD.SetAmmoCounterText(currentMagazineAmmo, magazineSize, reserveAmmo);
+        HUD.SetAmmoCounterText(currentMagazineAmmo, magazineSize, currentReserveAmmo);
+    }
+
+    private float GetInnaccuracy()
+    {
+        AccuracyProfile profile = Weapons.GetProfile(type).AccuracyProfile;
+
+        float normalizedSpeed = Player.Movement.FromStillToMaxSpeed01;
+
+        if (Player.Movement.Crouched)
+            return Mathf.Lerp(profile.crouchingInnaccuracy, profile.standingInnaccuracy, normalizedSpeed);
+        else if (Player.Movement.Sprinting)
+            return Mathf.Lerp(profile.standingInnaccuracy, profile.runningInnaccuracy, normalizedSpeed);
+        else
+            return Mathf.Lerp(profile.standingInnaccuracy, profile.walkingInnaccuracy, normalizedSpeed);
+    }
+
+    public void RefillAmmo()
+    {
+        currentReserveAmmo = reserveAmmo;
+        currentMagazineAmmo = magazineSize;
     }
 }

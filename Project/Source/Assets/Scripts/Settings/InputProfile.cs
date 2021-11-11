@@ -11,6 +11,7 @@ public class InputProfile
 
     public KeyCode sprint = KeyCode.LeftShift;
     public KeyCode jump = KeyCode.Space;
+    public KeyCode crouch = KeyCode.C;
 
     public KeyCode fire = KeyCode.Mouse0;
     public KeyCode reload = KeyCode.R;
@@ -26,6 +27,7 @@ public class InputProfile
 
         sprint = KeyCode.LeftShift;
         jump = KeyCode.Space;
+        crouch = KeyCode.C;
 
         fire = KeyCode.Mouse0;
         reload = KeyCode.R;

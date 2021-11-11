@@ -42,26 +42,22 @@ public class PlayerMovement : MonoBehaviour
 
 
     [Header("Don't change")]
-    //[Tooltip(Tooltips.GROUND_SIZE)]
     public float groundedRaycastSize = 0.5f;
-
-    //[Tooltip(Tooltips.GROUND_LENGTH)]
     public float groundedRaycastLength = 0.6f;
-
-    //[Tooltip(Tooltips.DOWNFORCE_SIZE)]
     public float downforceCheckSize = 0.2f;
-
-    //[Tooltip(Tooltips.DOWNFORCE_LENGTH)]
     public float downforceCheckLength = 0.5f;
-
-    //[Tooltip(Tooltips.MAX_FALL_SPEED)]
     [Min(10f)] public float maxFallSpeed = 35;
-
-    //[Tooltip(Tooltips.DOWNFORCE)]
     public float downForce = 3;
 
-    //[Tooltip(Tooltips.GROUND_LAYER)]
     public LayerMask groundLayermask;
+
+    [Space]
+    public float crouchRaycastSize = 0.5f;
+    public float crouchRaycastLength = 0.6f;
+    public LayerMask crouchBlockLayermask;
+    public float standingControllerHeight = 2;
+    public float crouchingControllerHeight = 1;
+    public float crouchChangeSpeed = 5;
     #endregion
 
 
@@ -99,16 +95,26 @@ public class PlayerMovement : MonoBehaviour
 
     public bool Moving => actualVelocity.Flattened().sqrMagnitude > 0.05f && desiredVelocity.sqrMagnitude > 0.05f;
     public bool Sprinting => Input.GetKey(Inputs.Sprint);
+    public bool WantsToCrouch => Input.GetKey(Inputs.Crouch);
+    public bool Crouched => crouched;
 
     /// <summary>
     /// A value between 0-1 depending on if the player is walking or running
     /// </summary>
     public float NormalizedSpeed => Mathf.InverseLerp(movementProfile.walkingSpeed, movementProfile.runningSpeed, currentSpeed);
 
+    /// <summary>
+    /// A value between 0-1, where 0 is stationary and 1 is moving current max speed (walk speed or sprint speed, dependantly).
+    /// </summary>
+    public float FromStillToMaxSpeed01 => Mathf.InverseLerp(-currentSpeed, currentSpeed, currentVelocity.Flattened().magnitude) * 2 - 1;
+
     public static event Action<float> OnLand;
     private float airtime;
     private Vector3 currentNormal;
 
+    private bool crouched;
+
+    public bool inspector_crouching; // for inspector
 
     private void Start()
     {
@@ -120,6 +126,8 @@ public class PlayerMovement : MonoBehaviour
         if (controller == null) controller = GetComponent<CharacterController>();
 
         Inputs.Update();
+
+        UpdateCrouched();
 
         UpdateGrounded();
 
@@ -172,7 +180,8 @@ public class PlayerMovement : MonoBehaviour
                 currentVelocity.y = currentJumpHeight + movingJumpBonus; // If you are grounded and want to jump, jump
                 justJumped = true;
             }
-            else if (applyDownforce && !justJumped) currentVelocity.y = -downForce; // Otherwise, apply downforce
+            else if (applyDownforce && !justJumped && controller.height > standingControllerHeight - 0.1f) currentVelocity.y = -downForce; // Otherwise, apply downforce
+            // Controller has some difficulty standing from crouch when stationary, maybe this will fix it
         }
         else
         {
@@ -227,10 +236,36 @@ public class PlayerMovement : MonoBehaviour
             currentNormal = Vector3.up;
     }
 
+    private void UpdateCrouched()
+    {
+        if (WantsToCrouch && !crouched)
+        //if (true)
+        {
+            crouched = true;
+        }
+        else if (!WantsToCrouch && crouched)
+        {
+            //if (!Physics.SphereCast(new Ray(transform.position, Vector3.up), crouchRaycastSize, crouchRaycastLength + controller.height / 2f, crouchBlockLayermask))
+            Vector3 pos = Vector3.up * crouchRaycastLength;
+            pos.y -= controller.height / 2f;
+            if (!Physics.CheckSphere(transform.position + pos, crouchRaycastSize, crouchBlockLayermask))
+            {
+                crouched = false;
+            }
+        }
+
+        float desiredControllerHeight = crouched ? crouchingControllerHeight : standingControllerHeight;
+
+        //controller.height = Mathf.Lerp(controller.height, desiredControllerHeight, Time.deltaTime * crouchChangeSpeed);
+        controller.height = Mathf.MoveTowards(controller.height, desiredControllerHeight, Time.deltaTime * crouchChangeSpeed);
+
+        inspector_crouching = crouched;
+    }
+
     private void UpdateGrounded()
     {
-        grounded = Physics.CheckSphere(transform.position - new Vector3(0, groundedRaycastLength + controller.skinWidth, 0), groundedRaycastSize, groundLayermask);
-        applyDownforce = Physics.CheckSphere(transform.position - new Vector3(0, downforceCheckLength + controller.skinWidth, 0), downforceCheckSize, groundLayermask);
+        grounded = Physics.CheckSphere(transform.position - new Vector3(0, groundedRaycastLength + controller.skinWidth + controller.height / 2f, 0), groundedRaycastSize, groundLayermask);
+        applyDownforce = Physics.CheckSphere(transform.position - new Vector3(0, downforceCheckLength + controller.skinWidth + controller.height / 2f, 0), downforceCheckSize, groundLayermask);
 
         //grounded = Physics.SphereCast(new Ray(transform.position, Vector3.down), groundedRaycastSize, groundedRaycastLength + controller.skinWidth, groundLayermask);
         //applyDownforce = Physics.SphereCast(new Ray(transform.position, Vector3.down), downforceCheckSize, downforceCheckLength + controller.skinWidth, groundLayermask);
@@ -238,16 +273,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateSpeed()
     {
-        float airMultiplier = grounded ? 1f : movementProfile.airSpeedMultiplier;
+        float airMult = crouched ? movementProfile.crouchAirSpeedMultiplier : movementProfile.airSpeedMultiplier;
+        float airSpeedMult = grounded ? 1f : airMult;
         WeaponProfile currentProfile = Weapons.GetProfile(player.currentWeapon);
 
-        float baseSpeed = Sprinting && Moving ? movementProfile.runningSpeed : movementProfile.walkingSpeed;
-        float desiredSpeed = baseSpeed * airMultiplier * currentProfile.SpeedMultiplier;
+        float baseStandingSpeed = Sprinting && Moving ? movementProfile.runningSpeed : movementProfile.walkingSpeed;
+        float baseSpeed = crouched ? movementProfile.crouchSpeed : baseStandingSpeed;
+        float desiredSpeed = baseSpeed * airSpeedMult * currentProfile.SpeedMultiplier;
 
-        float baseJump = Sprinting && Moving ? movementProfile.runningJumpHeight : movementProfile.walkingJumpHeight;
+        float baseStandingJump = Sprinting && Moving ? movementProfile.runningJumpHeight : movementProfile.walkingJumpHeight;
+        float baseJump = crouched ? movementProfile.crouchJumpHeight : baseStandingJump;
         float desiredJump = baseJump * currentProfile.JumpMultiplier;
 
-        currentSpeed = Mathf.Lerp(currentSpeed, desiredSpeed, Time.deltaTime * speedChangeSmoothing);
+        if (grounded)
+            currentSpeed = Mathf.Lerp(currentSpeed, desiredSpeed, Time.deltaTime * speedChangeSmoothing);
+        else
+            currentSpeed = Mathf.Max(currentSpeed, Mathf.Lerp(currentSpeed, desiredSpeed, Time.deltaTime * speedChangeSmoothing));
         currentJumpHeight = Mathf.Lerp(currentJumpHeight, desiredJump, Time.deltaTime * speedChangeSmoothing);
     }
 
@@ -256,10 +297,16 @@ public class PlayerMovement : MonoBehaviour
         if (controller == null) controller = GetComponent<CharacterController>();
 
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position + Vector3.down * (groundedRaycastLength + controller.skinWidth), groundedRaycastSize);
+        Gizmos.DrawSphere(transform.position + Vector3.down * (groundedRaycastLength + controller.skinWidth + controller.height / 2f), groundedRaycastSize);
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(transform.position + Vector3.down * (downforceCheckLength + controller.skinWidth), downforceCheckSize);
-        
+        Gizmos.DrawSphere(transform.position + Vector3.down * (downforceCheckLength + controller.skinWidth + controller.height / 2f), downforceCheckSize);
+        Gizmos.color = Color.blue;
+        Vector3 pos = Vector3.up * crouchRaycastLength;
+        pos.y -= controller.height / 2f;
+        Gizmos.DrawSphere(transform.position + pos, crouchRaycastSize);
+        //Gizmos.color = Color.black;
+        //Gizmos.DrawSphere(transform.position, crouchRaycastSize / 2f);
+
         // Just draws the ground check rays so you can make sure they intersect the ground
     }
 }

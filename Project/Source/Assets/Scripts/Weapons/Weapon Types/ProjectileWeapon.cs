@@ -10,6 +10,7 @@ public class ProjectileWeapon : WeaponBase
     public int magazineSize;
     public int reserveAmmo;
     private int currentMagazineAmmo;
+    private int currentReserveAmmo;
 
     [Space]
     public float reloadTime = 2f;
@@ -28,6 +29,9 @@ public class ProjectileWeapon : WeaponBase
 
     public GameObject projectilePrefab;
 
+    public ReloadAudio[] reloadAudio;
+    public ReloadAudio[] reloadEmptyAudio;
+
     //public float GetTimePerShot()
     //{
     //    if (secondsPerShot == 0)
@@ -41,6 +45,7 @@ public class ProjectileWeapon : WeaponBase
     private void Start()
     {
         currentMagazineAmmo = magazineSize;
+        currentReserveAmmo = reserveAmmo;
         secondsPerShot = 1f / (fireRateRPM / 60f);
 
         UpdateAmmoText();
@@ -58,7 +63,7 @@ public class ProjectileWeapon : WeaponBase
         if (drawTimer > 0)
         {
             drawTimer -= Time.deltaTime;
-            if (currentMagazineAmmo <= 0 && reserveAmmo > 0)
+            if (currentMagazineAmmo <= 0 && currentReserveAmmo > 0)
                 ReloadEmpty();
         }
 
@@ -77,7 +82,7 @@ public class ProjectileWeapon : WeaponBase
 
     public bool CanReload()
     {
-        return currentMagazineAmmo < magazineSize && reserveAmmo > 0 && reloadTimer <= 0 && drawTimer <= 0 && fireTimer <= 0;
+        return currentMagazineAmmo < magazineSize && currentReserveAmmo > 0 && reloadTimer <= 0 && drawTimer <= 0 && fireTimer <= 0;
     }
 
     public override void OnTryFire()
@@ -85,7 +90,12 @@ public class ProjectileWeapon : WeaponBase
         if (CanFire()) Fire();
 
         if (currentMagazineAmmo <= 0 && CanReload())
-            ReloadEmpty();
+        {
+            if (currentReserveAmmo <= 1)
+                Reload();
+            else
+                ReloadEmpty();
+        }
     }
 
     public override void OnTryReload()
@@ -174,6 +184,7 @@ public class ProjectileWeapon : WeaponBase
 
         animationPlayer.Reload();
 
+        PlayAudio(reloadAudio);
         //try
         //{
         //    PlayReloadAudio(player);
@@ -190,6 +201,7 @@ public class ProjectileWeapon : WeaponBase
 
         animationPlayer.ReloadEmpty();
 
+        PlayAudio(reloadEmptyAudio);
         //try
         //{
         //    PlayReloadAudio(player);
@@ -204,16 +216,16 @@ public class ProjectileWeapon : WeaponBase
     {
         int bulletsNeeded = magazineSize - currentMagazineAmmo;
 
-        if (bulletsNeeded <= reserveAmmo)
+        if (bulletsNeeded <= currentReserveAmmo)
         {
             currentMagazineAmmo = magazineSize;
             if (!CheatManager.InfiniteAmmo)
-                reserveAmmo -= bulletsNeeded;
+                currentReserveAmmo -= bulletsNeeded;
         }
         else
         {
-            currentMagazineAmmo += reserveAmmo;
-            reserveAmmo = 0;
+            currentMagazineAmmo += currentReserveAmmo;
+            currentReserveAmmo = 0;
         }
 
         if (currentMagazineAmmo > magazineSize)
@@ -226,6 +238,12 @@ public class ProjectileWeapon : WeaponBase
 
     private void UpdateAmmoText()
     {
-        HUD.SetAmmoCounterText(currentMagazineAmmo, magazineSize, reserveAmmo);
+        HUD.SetAmmoCounterText(currentMagazineAmmo, magazineSize, currentReserveAmmo);
+    }
+
+    public void RefillAmmo()
+    {
+        currentReserveAmmo = reserveAmmo;
+        currentMagazineAmmo = magazineSize;
     }
 }

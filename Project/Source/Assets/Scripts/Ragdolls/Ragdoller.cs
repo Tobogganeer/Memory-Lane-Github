@@ -8,6 +8,8 @@ public class Ragdoller : MonoBehaviour
     public Behaviour[] componentsToDisableOnRagdoll;
     public Collider[] collidersToDisableOnRagdoll;
 
+    public RagdollItem[] items;
+
     private void Start()
     {
         DisableRagdoll();
@@ -17,6 +19,11 @@ public class Ragdoller : MonoBehaviour
     {
         SetAllComps(false);
         SetAllBones(true);
+
+        foreach (RagdollItem item in items)
+        {
+            item.Drop(transform.forward * 5);
+        }
     }
 
     public void DisableRagdoll()

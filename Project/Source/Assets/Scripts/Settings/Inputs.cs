@@ -11,6 +11,7 @@ public static class Inputs
 
     public static KeyCode Sprint => inputProfile.sprint;
     public static KeyCode Jump => inputProfile.jump;
+    public static KeyCode Crouch => inputProfile.crouch;
 
     public static KeyCode Fire => inputProfile.fire;
     public static KeyCode Reload => inputProfile.reload;
