@@ -15,10 +15,19 @@ MonoBehaviour:
   type: 3
   speedMultiplier: 0.75
   jumpMultiplier: 0.8
+  adsSpeedMultiplier: 0.7
   bobSpeedMultiplier: 0.7
   bobAmountMultiplier: 1.3
   camShakePreset: {fileID: 11400000, guid: 62a78fad39f33ab48b802e015fe33ed7, type: 2}
   fireRateRPM: 525
+  adsOffset: {x: 0.1573, y: 0.023, z: 0.2}
+  recoilAmount: 30
+  aimingRecoilMultiplier: 0.7
+  crouchingRecoilMultiplier: 0.7
+  crouchOffsets:
+    pos: {x: -0.14, y: -0.11, z: -0.13}
+    rot: {x: 0, y: 0, z: 25}
+    rot_aim: {x: 0, y: 0, z: 10}
   ballisticsSettings:
     penetrationPower: 0.7
     maxPenetrations: 7
@@ -26,12 +35,20 @@ MonoBehaviour:
   maxRange: 250
   baseDamage: 16
   accuracyProfile:
-    crouchingInnaccuracy: 0.6
     standingInnaccuracy: 1.2
     walkingInnaccuracy: 3.8
     runningInnaccuracy: 6.5
+    adsMult: 0.8
+    crouchingMult: 0.7
+    airborneMult: 2
   tracerProbability: 0.7
   layermask:
     serializedVersion: 2
     m_Bits: 2561
   rbForce: 5
+  hitboxDamageMultipliers:
+    head: 3
+    chest: 1.4
+    abdomen: 1.8
+    arms: 0.5
+    legs: 0.4

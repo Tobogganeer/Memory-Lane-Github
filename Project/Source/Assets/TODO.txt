@@ -2,8 +2,24 @@ Fix weapon sway in builds
 ^^^ kinda fixed, find out why it was happening in the first place
 
 Enemies alerted when shot
-Recoil
 Surface audio
 Damage falloff with distance
-Change reload sounds to reload events, include camera shake
-// ^^^ Will be adding camera movement to anims, so no need
+
+Camera impulse on jump
+
+
+
+Anims
+{
+-Draw
+-Idle
+-Inspect
+-Idle aim
+-Fire aim
+-Fire
+-Reload
+-Reload empty
+-(start, single, double, return for xrm)
+-Holster
+-(Maybe) Fire last
+}

@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
 {
+    public static WeaponManager instance;
+    private void Awake()
+    {
+        instance = this;
+    }
+
     public WeaponBase p3k;
     public WeaponBase nateva;
-    public WeaponBase mk_x;
+    public WeaponBase fnal;
     public WeaponBase molkor;
     public WeaponBase gr3_n;
     public WeaponBase xrm;
@@ -22,7 +28,7 @@ public class WeaponManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1)) EnableWeapon(p3k);
         if (Input.GetKeyDown(KeyCode.Alpha2)) EnableWeapon(nateva);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) EnableWeapon(mk_x);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) EnableWeapon(fnal);
         if (Input.GetKeyDown(KeyCode.Alpha4)) EnableWeapon(molkor);
         if (Input.GetKeyDown(KeyCode.Alpha5)) EnableWeapon(gr3_n);
         if (Input.GetKeyDown(KeyCode.Alpha6)) EnableWeapon(xrm);
@@ -55,7 +61,7 @@ public class WeaponManager : MonoBehaviour
 
         p3k.gameObject.SetActive(false);
         nateva.gameObject.SetActive(false);
-        mk_x.gameObject.SetActive(false);
+        fnal.gameObject.SetActive(false);
         molkor.gameObject.SetActive(false);
         gr3_n.gameObject.SetActive(false);
         xrm.gameObject.SetActive(false);

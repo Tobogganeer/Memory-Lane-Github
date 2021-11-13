@@ -13,28 +13,25 @@ public class Hitbox : MonoBehaviour, IBulletDamagable, IExplosionDamagable
         damagable = damageReceiver.GetComponent<IDamagable>();
     }
 
-    public float GetBulletDamageMultiplier()
+    public static float GetBulletDamageMultiplier(DamageDetails details, HitboxRegion region)
     {
-        return GetBulletDamageMultiplier(region);
-    }
+        DamageRegions regions = Weapons.GetProfile(details.weaponType).HitboxDamageMultipliers;
 
-    public static float GetBulletDamageMultiplier(HitboxRegion region)
-    {
         switch (region)
         {
             case HitboxRegion.Chest:
-                return 1.0f;
+                return regions.chest;
             case HitboxRegion.Abdomen:
-                return 1.25f;
+                return regions.abdomen;
             case HitboxRegion.Arms:
-                return 0.65f;
+                return regions.arms;
             case HitboxRegion.Legs:
-                return 0.45f;
+                return regions.legs;
             case HitboxRegion.Head:
-                return 3.5f;
+                return regions.head;
+            default:
+                return regions.chest;
         }
-
-        return 1.0f;
     }
 
     public float GetExplosiveDamageMultiplier()
@@ -68,7 +65,7 @@ public class Hitbox : MonoBehaviour, IBulletDamagable, IExplosionDamagable
 
     public void TakeBulletDamage(DamageDetails details)
     {
-        details.amount *= GetBulletDamageMultiplier();
+        details.amount *= GetBulletDamageMultiplier(details, region);
         damagable.TakeDamage(details);
     }
 
@@ -76,5 +73,15 @@ public class Hitbox : MonoBehaviour, IBulletDamagable, IExplosionDamagable
     {
         details.amount *= GetExplosiveDamageMultiplier();
         damagable.TakeDamage(details);
+    }
+
+    [System.Serializable]
+    public class DamageRegions
+    {
+        public float head = 3.5f;
+        public float chest = 1.0f;
+        public float abdomen = 1.25f;
+        public float arms = 0.65f;
+        public float legs = 0.45f;
     }
 }

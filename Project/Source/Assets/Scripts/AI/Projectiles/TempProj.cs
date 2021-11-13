@@ -25,7 +25,7 @@ public class TempProj : EnemyProjectile
         }
         else if (collision.transform.TryGetComponent(out IBulletDamagable damagable))
         {
-            damagable.TakeBulletDamage(DamageDetails.NoDir(damage));
+            damagable.TakeBulletDamage(DamageDetails.NoDir(damage, WeaponType.None));
         }
 
         Destroy(gameObject);

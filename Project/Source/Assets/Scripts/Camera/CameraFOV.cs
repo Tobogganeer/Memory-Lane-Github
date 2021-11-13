@@ -9,7 +9,9 @@ public class CameraFOV : MonoBehaviour
     //private static float desiredFOV;
     private static float desiredMultiplier = 1;
     public float transitionSpeed = 5;
-    
+
+    public float adsMult = 1.3f;
+
     private void Start()
     {
         fovs = new float[cameras.Length];
@@ -21,9 +23,11 @@ public class CameraFOV : MonoBehaviour
 
     private void Update()
     {
+        float mult = desiredMultiplier * (WeaponSway.IsInADS ? Mathf.Lerp(1f, adsMult, WeaponSway.MaxADSInfluence) : 1f);
+
         for (int i = 0; i < cameras.Length; i++)
         {
-            cameras[i].fieldOfView = Mathf.Lerp(cameras[i].fieldOfView, fovs[i] * desiredMultiplier, Time.deltaTime * transitionSpeed);
+            cameras[i].fieldOfView = Mathf.Lerp(cameras[i].fieldOfView, fovs[i] * mult, Time.deltaTime * transitionSpeed);
         }
     }
 

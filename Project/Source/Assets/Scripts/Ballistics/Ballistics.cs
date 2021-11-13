@@ -111,7 +111,7 @@ public class Ballistics
         return BallisticsResult.Empty();
     }
 
-    public static DamageResult ApplyDamage(BallisticsResult result, float damage, float rbForce)
+    public static DamageResult ApplyDamage(BallisticsResult result, float damage, float rbForce, WeaponType weaponType)
     {
         bool appliedDamage = false;
 
@@ -129,7 +129,7 @@ public class Ballistics
 
             if (data.penetratedCollider.TryGetComponent(out IBulletDamagable damagable))
             {
-                damagable.TakeBulletDamage(new DamageDetails(calibratedDamage, result.origin, result.direction));
+                damagable.TakeBulletDamage(new DamageDetails(calibratedDamage, result.origin, result.direction, weaponType));
                 appliedDamage = true;
                 //Draw.DrawText(data.entryPoint, calibratedDamage.ToString(), Color.blue, 24, 1f, true);
             }

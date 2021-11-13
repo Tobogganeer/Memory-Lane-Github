@@ -22,6 +22,7 @@ public enum WeaponType
     Molkor, // LMG
     GR3_N, // Grenade Launcher
     XRM, // Shotgun
+    None
 }
 
 public enum Level

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShellWeapon : WeaponBase
 {
-    public XRMAnimationPlayer animationPlayer;
+    public WeaponAnimationPlayer animationPlayer;
 
     [Space]
     public int magazineSize;
@@ -47,6 +47,8 @@ public class ShellWeapon : WeaponBase
     public ReloadAudio[] reloadEndAudio;
     public ReloadAudio[] reloadEndEmptyAudio;
 
+    private const float MAX_ACTION_ADS_INFLUENCE = 0.7f;
+
     //public float GetTimePerShot()
     //{
     //    if (secondsPerShot == 0)
@@ -86,6 +88,9 @@ public class ShellWeapon : WeaponBase
                 wasEmptyReload = true;
                 StartReload();
             }
+
+            if (drawTimer <= 0)
+                OnDrawFinish();
         }
 
         if (reloadTimer > 0)
@@ -138,6 +143,8 @@ public class ShellWeapon : WeaponBase
         tryingToCancelReload = false;
 
         UpdateAmmoText();
+        animationPlayer.Draw();
+        WeaponSway.MaxADSInfluence = 0f;
     }
 
     public override void OnHolster()
@@ -145,12 +152,17 @@ public class ShellWeapon : WeaponBase
         reloadTimer = 0;
         reloadTransitionTimer = 0;
         tryingToCancelReload = false;
+
+        WeaponSway.MaxADSInfluence = 0f;
     }
 
     public override void OnTryInspect()
     {
         if (fireTimer <= 0 && reloadTimer <= 0 && reloadTransitionTimer <= 0)
+        {
             animationPlayer.Inspect();
+            WeaponSway.MaxADSInfluence = 0f;
+        }
     }
 
 
@@ -169,7 +181,7 @@ public class ShellWeapon : WeaponBase
             BallisticsResult result = Ballistics.Cast(shootFrom.position, fireDir, profile.MaxRange, profile.LayerMask, profile.BallisticsSettings);
             if (!result.empty)
             {
-                DamageResult damageResult = Ballistics.ApplyDamage(result, profile.BaseDamage, profile.RBForce);
+                DamageResult damageResult = Ballistics.ApplyDamage(result, profile.BaseDamage, profile.RBForce, type);
                 Ballistics.DrawResult(result, 5);
 
                 if (damageResult.appliedDamage)
@@ -189,11 +201,11 @@ public class ShellWeapon : WeaponBase
 
         PlayFireSound();
 
-        FPSCamera.Shake(profile.CamShakePreset);
-
-        animationPlayer.Fire();
+        FireFX(profile, animationPlayer);
 
         UpdateAmmoText();
+
+        WeaponSway.MaxADSInfluence = 1f;
 
         //Vector2 inaccuracyVector = OptimizedRandom.insideUnitCircle * CalculateInaccuracy(ownerPlayer);
         //Quaternion inaccuracyRotation = Quaternion.Euler(inaccuracyVector.x, inaccuracyVector.y, 0);
@@ -264,6 +276,7 @@ public class ShellWeapon : WeaponBase
         animationPlayer.ReloadStart();
 
         PlayAudio(reloadStartAudio);
+        WeaponSway.MaxADSInfluence = MAX_ACTION_ADS_INFLUENCE;
     }
 
     private void EndReload()
@@ -273,6 +286,7 @@ public class ShellWeapon : WeaponBase
         animationPlayer.ReloadFinish();
 
         PlayAudio(reloadEndAudio);
+        WeaponSway.MaxADSInfluence = MAX_ACTION_ADS_INFLUENCE;
     }
 
     private void EndReloadEmpty()
@@ -282,6 +296,7 @@ public class ShellWeapon : WeaponBase
         animationPlayer.ReloadFinishEmpty();
 
         PlayAudio(reloadEndEmptyAudio);
+        WeaponSway.MaxADSInfluence = MAX_ACTION_ADS_INFLUENCE;
     }
 
     private void ReloadSingle()
@@ -293,6 +308,7 @@ public class ShellWeapon : WeaponBase
         animationPlayer.ReloadSingle();
 
         PlayAudio(singleShellAudio);
+        WeaponSway.MaxADSInfluence = MAX_ACTION_ADS_INFLUENCE;
         //try
         //{
         //    PlayReloadAudio(player);
@@ -312,6 +328,7 @@ public class ShellWeapon : WeaponBase
         animationPlayer.ReloadDouble();
 
         PlayAudio(doubleShellAudio);
+        WeaponSway.MaxADSInfluence = MAX_ACTION_ADS_INFLUENCE;
         //try
         //{
         //    PlayReloadAudio(player);
@@ -391,30 +408,28 @@ public class ShellWeapon : WeaponBase
         }
 
         UpdateAmmoText();
+        WeaponSway.MaxADSInfluence = MAX_ACTION_ADS_INFLUENCE;
     }
 
     private void OnReloadTransitionFinish()
     {
-        if (transitioningIn) Reload();
+        if (transitioningIn)
+        {
+            Reload();
+            WeaponSway.MaxADSInfluence = MAX_ACTION_ADS_INFLUENCE;
+        }
+        else 
+            WeaponSway.MaxADSInfluence = 1f;
+    }
+
+    private void OnDrawFinish()
+    {
+        WeaponSway.MaxADSInfluence = 1f;
     }
 
     private void UpdateAmmoText()
     {
         HUD.SetAmmoCounterText(currentMagazineAmmo, magazineSize, currentReserveAmmo);
-    }
-
-    private float GetInnaccuracy()
-    {
-        AccuracyProfile profile = Weapons.GetProfile(type).AccuracyProfile;
-
-        float normalizedSpeed = Player.Movement.FromStillToMaxSpeed01;
-
-        if (Player.Movement.Crouched)
-            return Mathf.Lerp(profile.crouchingInnaccuracy, profile.standingInnaccuracy, normalizedSpeed);
-        else if (Player.Movement.Sprinting)
-            return Mathf.Lerp(profile.standingInnaccuracy, profile.runningInnaccuracy, normalizedSpeed);
-        else
-            return Mathf.Lerp(profile.standingInnaccuracy, profile.walkingInnaccuracy, normalizedSpeed);
     }
 
     private enum ShellReloadType

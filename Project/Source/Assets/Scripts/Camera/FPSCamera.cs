@@ -29,7 +29,7 @@ public class FPSCamera : MonoBehaviour
 
     [Space]
     public float recoilDecaySpeed = 10;
-    public float recoilSmoothSpeed = 5;
+    //public float recoilSmoothSpeed = 5;
     private static float currentRecoil;
     private static float desiredRecoil;
 
@@ -45,8 +45,11 @@ public class FPSCamera : MonoBehaviour
     private void Update()
     {
         //desiredRecoil = Mathf.MoveTowards(desiredRecoil, 0, Time.deltaTime * recoilDecaySpeed);
+        //desiredRecoil = Mathf.MoveTowards(desiredRecoil, 0, Time.deltaTime * recoilDecaySpeed * Mathf.Max(1, desiredRecoil * 0.2f));
+        //currentRecoil = Mathf.Lerp(currentRecoil, desiredRecoil, Time.deltaTime * recoilSmoothSpeed);
+
         desiredRecoil = Mathf.Lerp(desiredRecoil, 0, Time.deltaTime * recoilDecaySpeed);
-        currentRecoil = Mathf.Lerp(currentRecoil, desiredRecoil, Time.deltaTime * recoilSmoothSpeed);
+        yRotation -= desiredRecoil * Time.deltaTime;
 
         if (desiredRecoil < 0) desiredRecoil = 0;
 

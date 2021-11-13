@@ -4,15 +4,106 @@ ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
-      74: 5126750487073773740
-    second: Hand Amature|VM:Debug
-  - first:
       74: -1897568769654445124
     second: VM Weapons|VM:Debug
   - first:
+      74: -8683029720539455538
+    second: VM Weapons|VM:Empty_NoWeaponFrames
+  - first:
+      74: 2329197697099384603
+    second: VM Weapons|VM:FNAL_Draw
+  - first:
+      74: 2961135796206686164
+    second: VM Weapons|VM:FNAL_Fire
+  - first:
+      74: -2776038976449902486
+    second: VM Weapons|VM:FNAL_Fire_Aim
+  - first:
+      74: 5850830549570863368
+    second: VM Weapons|VM:FNAL_Holster
+  - first:
+      74: 71024459785267857
+    second: VM Weapons|VM:FNAL_Idle
+  - first:
+      74: -4013875776098163889
+    second: VM Weapons|VM:FNAL_Inspect
+  - first:
+      74: -5159452618696824764
+    second: VM Weapons|VM:FNAL_Reload
+  - first:
+      74: 2771513950982972553
+    second: VM Weapons|VM:FNAL_Reload_Empty
+  - first:
+      74: 67340452471483808
+    second: VM Weapons|VM:GR3-N_Idle
+  - first:
+      74: 4865088416515559542
+    second: VM Weapons|VM:Molkor_Idle
+  - first:
+      74: -2016822705051298862
+    second: VM Weapons|VM:Nateva_Draw
+  - first:
+      74: 947321863524001282
+    second: VM Weapons|VM:Nateva_Fire
+  - first:
+      74: 4747194275625798068
+    second: VM Weapons|VM:Nateva_Fire_Aim
+  - first:
+      74: -5876040387574435162
+    second: VM Weapons|VM:Nateva_Holster
+  - first:
+      74: -121649406545329358
+    second: VM Weapons|VM:Nateva_Idle
+  - first:
+      74: 7988225890219001780
+    second: VM Weapons|VM:Nateva_Inspect
+  - first:
+      74: 5889141504000921761
+    second: VM Weapons|VM:Nateva_Reload
+  - first:
+      74: -8177599844770709656
+    second: VM Weapons|VM:Nateva_Reload_Empty
+  - first:
+      74: 8524098814060780675
+    second: VM Weapons|VM:P3K_Draw
+  - first:
+      74: 6820720105515444302
+    second: VM Weapons|VM:P3K_Fire
+  - first:
+      74: 5936209179502152091
+    second: VM Weapons|VM:P3K_Fire_Aim
+  - first:
+      74: -1301555858118915501
+    second: VM Weapons|VM:P3K_Holster
+  - first:
+      74: 4270908121287785988
+    second: VM Weapons|VM:P3K_Idle
+  - first:
+      74: 2027880862509644929
+    second: VM Weapons|VM:P3K_Inspect
+  - first:
+      74: -6860054071111204139
+    second: VM Weapons|VM:P3K_Reload
+  - first:
+      74: 7330867890109621003
+    second: VM Weapons|VM:P3K_Reload_Empty
+  - first:
       74: 7928719375521407888
     second: VM Weapons|VM:TPose
-  externalObjects: {}
+  - first:
+      74: 7457005795251161094
+    second: VM Weapons|VM:XRM_Idle
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Base Rig Material
+    second: {fileID: 2100000, guid: 1ea8973454e6bcf4b94ae11bd34a9c1e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: a32a60f116cc36e40a8057e35a6791e8, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -39,65 +130,7 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: VM Weapons|VM:Debug
-      takeName: VM Weapons|VM:Debug
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 15
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: VM Weapons|VM:TPose
-      takeName: VM Weapons|VM:TPose
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+    clipAnimations: []
     isReadable: 0
   meshes:
     lODScreenPercentages: []

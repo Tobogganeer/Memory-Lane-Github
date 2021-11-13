@@ -39,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     //[Min(0f)] public float airAcceleration = 1;
 
     public float edgePushMultiplier = 0.5f;
+    public bool disableCrouchHopping;
 
 
     [Header("Don't change")]
@@ -73,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 lastPos;
 
     /// <summary>
-    /// The current velocity in local space
+    /// The the velocity that the controller will move. Includes downforce and gravity
     /// </summary>
     public Vector3 CurrentVelocity => currentVelocity;
     /// <summary>
@@ -85,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     public Vector3 TransformedDesiredVelocity => transformedDesiredVelocity;
     /// <summary>
-    /// The actual velocity of the character, in world space
+    /// The difference between the controllers last and current position
     /// </summary>
     public Vector3 ActualVelocity => actualVelocity;
     /// <summary>
@@ -94,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 LocalActualVelocity => transform.InverseTransformDirection(actualVelocity);
 
     public bool Moving => actualVelocity.Flattened().sqrMagnitude > 0.05f && desiredVelocity.sqrMagnitude > 0.05f;
-    public bool Sprinting => Input.GetKey(Inputs.Sprint);
+    public bool Sprinting => Input.GetKey(Inputs.Sprint) && (!Crouched || !grounded);
     public bool WantsToCrouch => Input.GetKey(Inputs.Crouch);
     public bool Crouched => crouched;
 
@@ -115,6 +116,8 @@ public class PlayerMovement : MonoBehaviour
     private bool crouched;
 
     public bool inspector_crouching; // for inspector
+
+    private const float CROUCH_ANTI_JITTER_FORCE = 0.02f;
 
     private void Start()
     {
@@ -152,15 +155,18 @@ public class PlayerMovement : MonoBehaviour
         desiredVelocity.z = Inputs.Vertical;
         // Sets the desired velocity
 
-        float y = currentVelocity.y;
-
-        Vector3 flatVel = currentVelocity.Flattened();
+        if (controller.height < standingControllerHeight - 0.05f && !crouched) desiredVelocity.z += CROUCH_ANTI_JITTER_FORCE;
+        // When standing up, weird jitter happens unless you are moving any amount
 
         transformedDesiredVelocity = transform.right * desiredVelocity.x + transform.forward * desiredVelocity.z;
         transformedDesiredVelocity = Vector3.ClampMagnitude(transformedDesiredVelocity, 1);
         transformedDesiredVelocity *= currentSpeed;
 
         float accel = grounded ? movementProfile.groundAcceleration : movementProfile.airAcceleration;
+
+        float y = currentVelocity.y;
+
+        Vector3 flatVel = currentVelocity.Flattened();
 
         currentVelocity = Vector3.Lerp(flatVel, transformedDesiredVelocity, Time.deltaTime * accel).WithY(y);
 
@@ -238,20 +244,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateCrouched()
     {
-        if (WantsToCrouch && !crouched)
-        //if (true)
+        //if (!Physics.SphereCast(new Ray(transform.position, Vector3.up), crouchRaycastSize, crouchRaycastLength + controller.height / 2f, crouchBlockLayermask))
+
+        Vector3 pos = Vector3.up * crouchRaycastLength;
+        pos.y -= controller.height / 2f;
+        
+        if (Physics.Raycast(transform.position, Vector3.up * (crouchRaycastLength - controller.height / 2f), crouchBlockLayermask))
+        {
+
+        }
+        else if (Physics.CheckSphere(transform.position + pos, crouchRaycastSize, crouchBlockLayermask))
         {
             crouched = true;
         }
-        else if (!WantsToCrouch && crouched)
+        else
         {
-            //if (!Physics.SphereCast(new Ray(transform.position, Vector3.up), crouchRaycastSize, crouchRaycastLength + controller.height / 2f, crouchBlockLayermask))
-            Vector3 pos = Vector3.up * crouchRaycastLength;
-            pos.y -= controller.height / 2f;
-            if (!Physics.CheckSphere(transform.position + pos, crouchRaycastSize, crouchBlockLayermask))
-            {
-                crouched = false;
-            }
+            crouched = WantsToCrouch;
         }
 
         float desiredControllerHeight = crouched ? crouchingControllerHeight : standingControllerHeight;
@@ -278,8 +286,12 @@ public class PlayerMovement : MonoBehaviour
         WeaponProfile currentProfile = Weapons.GetProfile(player.currentWeapon);
 
         float baseStandingSpeed = Sprinting && Moving ? movementProfile.runningSpeed : movementProfile.walkingSpeed;
-        float baseSpeed = crouched ? movementProfile.crouchSpeed : baseStandingSpeed;
-        float desiredSpeed = baseSpeed * airSpeedMult * currentProfile.SpeedMultiplier;
+
+        bool canCrouchHop = !disableCrouchHopping && !grounded;
+        float baseSpeed = crouched && !canCrouchHop ? movementProfile.crouchSpeed : baseStandingSpeed;
+
+        float adsMult = WeaponSway.IsInADS ? currentProfile.ADSSpeedMultiplier : 1f;
+        float desiredSpeed = baseSpeed * airSpeedMult * currentProfile.SpeedMultiplier * adsMult;
 
         float baseStandingJump = Sprinting && Moving ? movementProfile.runningJumpHeight : movementProfile.walkingJumpHeight;
         float baseJump = crouched ? movementProfile.crouchJumpHeight : baseStandingJump;
@@ -304,6 +316,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 pos = Vector3.up * crouchRaycastLength;
         pos.y -= controller.height / 2f;
         Gizmos.DrawSphere(transform.position + pos, crouchRaycastSize);
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.up * (crouchRaycastLength - controller.height / 2f));
         //Gizmos.color = Color.black;
         //Gizmos.DrawSphere(transform.position, crouchRaycastSize / 2f);
 

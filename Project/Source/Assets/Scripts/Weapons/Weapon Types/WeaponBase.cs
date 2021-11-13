@@ -29,6 +29,48 @@ public abstract class WeaponBase : MonoBehaviour
             Timer.Run(() => AudioManager.Play(item.clipType, transform.position, transform), item.afterTime, WEAPON_RELOAD_TIMER_ID);
         }
     }
+
+    public void FireFX(WeaponProfile profile, WeaponAnimationPlayer animationPlayer)
+    {
+        FPSCamera.Shake(profile.CamShakePreset);
+        float recoil = profile.RecoilAmount;
+
+        if (!WeaponSway.IsInADS)
+        {
+            animationPlayer.Fire();
+        }
+        else
+        {
+            animationPlayer.FireAimed();
+            recoil *= profile.AimingRecoilMultiplier;
+        }
+
+        if (Player.Movement.Crouched) recoil *= profile.CrouchingRecoilMultiplier;
+
+        FPSCamera.AddRecoil(recoil);
+    }
+
+    public float GetInnaccuracy()
+    {
+        AccuracyProfile profile = Weapons.GetProfile(type).AccuracyProfile;
+
+        float normalizedSpeed = Player.Movement.FromStillToMaxSpeed01;
+        float accuracy;
+
+        if (Player.Movement.Sprinting)
+            accuracy = Mathf.Lerp(profile.standingInnaccuracy, profile.runningInnaccuracy, normalizedSpeed);
+        else
+            accuracy = Mathf.Lerp(profile.standingInnaccuracy, profile.walkingInnaccuracy, normalizedSpeed);
+
+        if (WeaponSway.IsInADS)
+            accuracy *= profile.adsMult;
+        if (Player.Movement.Crouched)
+            accuracy *= profile.crouchingMult;
+        if (!Player.Movement.grounded)
+            accuracy *= profile.airborneMult;
+
+        return accuracy;
+    }
 }
 
 [System.Serializable]

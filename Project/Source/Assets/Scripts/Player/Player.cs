@@ -16,8 +16,6 @@ public class Player : MonoBehaviour
     public HitPoints health;
     public HitPoints armour;
 
-    public WeaponType currentWeapon = WeaponType.P3K; // Temp, will be changed to a weapon class later
-
     public static PlayerMovement Movement => instance.movement;
     public static WeaponSway WeaponSway => instance.weaponSway;
     public static FPSCamera FPSCamera => instance.fpsCamera;
@@ -28,6 +26,8 @@ public class Player : MonoBehaviour
     public static HitPoints Health => instance.health;
     public static HitPoints Armour => instance.armour;
     public static bool IsDead => Health.CurrentHP <= 0;
+
+    public WeaponType currentWeapon = WeaponType.P3K;
 
     public static void SetPosition(Vector3 position)
     {

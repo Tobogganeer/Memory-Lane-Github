@@ -32,6 +32,8 @@ public class ProjectileWeapon : WeaponBase
     public ReloadAudio[] reloadAudio;
     public ReloadAudio[] reloadEmptyAudio;
 
+    private const float MAX_ACTION_ADS_INFLUENCE = 0.7f;
+
     //public float GetTimePerShot()
     //{
     //    if (secondsPerShot == 0)
@@ -65,6 +67,9 @@ public class ProjectileWeapon : WeaponBase
             drawTimer -= Time.deltaTime;
             if (currentMagazineAmmo <= 0 && currentReserveAmmo > 0)
                 ReloadEmpty();
+
+            if (drawTimer <= 0)
+                OnDrawFinish();
         }
 
         if (reloadTimer > 0)
@@ -110,17 +115,23 @@ public class ProjectileWeapon : WeaponBase
         reloadTimer = 0;
 
         UpdateAmmoText();
+        animationPlayer.Draw();
+        WeaponSway.MaxADSInfluence = 0f;
     }
 
     public override void OnHolster()
     {
         reloadTimer = 0;
+        WeaponSway.MaxADSInfluence = 0f;
     }
 
     public override void OnTryInspect()
     {
         if (fireTimer <= 0 && reloadTimer <= 0)
+        {
             animationPlayer.Inspect();
+            WeaponSway.MaxADSInfluence = 0f;
+        }
     }
 
 
@@ -134,11 +145,12 @@ public class ProjectileWeapon : WeaponBase
 
         PlayFireSound();
 
-        FPSCamera.Shake(Weapons.GetProfile(type).CamShakePreset);
+        WeaponProfile profile = Weapons.GetProfile(type);
 
-        animationPlayer.Fire();
+        FireFX(profile, animationPlayer);
 
         UpdateAmmoText();
+        WeaponSway.MaxADSInfluence = 1f;
 
         //Vector2 inaccuracyVector = OptimizedRandom.insideUnitCircle * CalculateInaccuracy(ownerPlayer);
         //Quaternion inaccuracyRotation = Quaternion.Euler(inaccuracyVector.x, inaccuracyVector.y, 0);
@@ -185,6 +197,7 @@ public class ProjectileWeapon : WeaponBase
         animationPlayer.Reload();
 
         PlayAudio(reloadAudio);
+        WeaponSway.MaxADSInfluence = MAX_ACTION_ADS_INFLUENCE;
         //try
         //{
         //    PlayReloadAudio(player);
@@ -202,6 +215,7 @@ public class ProjectileWeapon : WeaponBase
         animationPlayer.ReloadEmpty();
 
         PlayAudio(reloadEmptyAudio);
+        WeaponSway.MaxADSInfluence = MAX_ACTION_ADS_INFLUENCE;
         //try
         //{
         //    PlayReloadAudio(player);
@@ -234,6 +248,12 @@ public class ProjectileWeapon : WeaponBase
         }
 
         UpdateAmmoText();
+        WeaponSway.MaxADSInfluence = 1f;
+    }
+
+    private void OnDrawFinish()
+    {
+        WeaponSway.MaxADSInfluence = 1f;
     }
 
     private void UpdateAmmoText()

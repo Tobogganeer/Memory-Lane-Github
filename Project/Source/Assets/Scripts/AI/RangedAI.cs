@@ -25,7 +25,7 @@ public class RangedAI : MonoBehaviour, IDamagable
 
     public float attackCooldownMin = 0.1f; // Attacks use a random time between these min and max values
     public float attackCooldownMax = 2f;
-    public GameObject attackPrefab; // Obj to spawn on attack
+    //public GameObject attackPrefab; // Obj to spawn on attack
     public Transform attackFrom; // Where to spawn obj
     public float playerPredictionSeconds = 0.3f; // How far into the future to predict the player to be
     public float predictionDeltaSpeed = 1; // How fast the prediction converges
@@ -240,9 +240,9 @@ public class RangedAI : MonoBehaviour, IDamagable
         Vector3 dir = attackFrom.position.DirectionTo(predictedPos);
         Debug.DrawRay(attackFrom.position, dir * 50, Color.blue, 0.4f);
 
-        GameObject proj = Instantiate(attackPrefab, attackFrom.position, Quaternion.LookRotation(dir, Vector3.up));
-        proj.GetComponent<EnemyProjectile>().Init(predictedPos, attackFrom.position);
-        Physics.IgnoreCollision(proj.GetComponent<Collider>(), collider, true);
+        //GameObject proj = Instantiate(attackPrefab, attackFrom.position, Quaternion.LookRotation(dir, Vector3.up));
+        //proj.GetComponent<EnemyProjectile>().Init(predictedPos, attackFrom.position);
+        //Physics.IgnoreCollision(proj.GetComponent<Collider>(), collider, true);
         //lastPredictionDelta = predictionDelta;
     }
 

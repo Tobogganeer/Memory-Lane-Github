@@ -162,7 +162,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8418537472759645396}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -275,8 +275,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movement: {fileID: 8418537472759645397}
-  weaponSway: {fileID: 0}
-  fpsCamera: {fileID: 0}
+  weaponSway: {fileID: 9079196578757219154}
+  fpsCamera: {fileID: 660742807957887441}
   health: {fileID: 1734817784}
   armour: {fileID: 1734817783}
   currentWeapon: 0
@@ -400,3 +400,25 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2604523989631457484, guid: f42b0a4a3e55a09409ff1c92a8e17bee, type: 3}
   m_PrefabInstance: {fileID: 2079979408807582664}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &660742807957887441 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1582729764528128537, guid: f42b0a4a3e55a09409ff1c92a8e17bee, type: 3}
+  m_PrefabInstance: {fileID: 2079979408807582664}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6507b9bb1b525c44b983ff6b86ced6e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9079196578757219154 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6999257306422462618, guid: f42b0a4a3e55a09409ff1c92a8e17bee, type: 3}
+  m_PrefabInstance: {fileID: 2079979408807582664}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d221a851798fd345be64972e6e6b23a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

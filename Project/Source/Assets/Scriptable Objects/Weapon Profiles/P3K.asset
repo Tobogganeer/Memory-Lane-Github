@@ -13,12 +13,21 @@ MonoBehaviour:
   m_Name: P3K
   m_EditorClassIdentifier: 
   type: 0
-  speedMultiplier: 1
+  speedMultiplier: 1.15
   jumpMultiplier: 1
+  adsSpeedMultiplier: 0.7
   bobSpeedMultiplier: 1
   bobAmountMultiplier: 1
   camShakePreset: {fileID: 11400000, guid: 3fba06dac8e85e84289fd45c406097e3, type: 2}
   fireRateRPM: 600
+  adsOffset: {x: 0.0973, y: 0.026, z: 0.15}
+  recoilAmount: 25
+  aimingRecoilMultiplier: 0.7
+  crouchingRecoilMultiplier: 0.7
+  crouchOffsets:
+    pos: {x: -0.1, y: -0.1, z: -0.05}
+    rot: {x: 0, y: 0, z: 35}
+    rot_aim: {x: 0, y: 0, z: 10}
   ballisticsSettings:
     penetrationPower: 0.35
     maxPenetrations: 5
@@ -26,12 +35,20 @@ MonoBehaviour:
   maxRange: 250
   baseDamage: 19
   accuracyProfile:
-    crouchingInnaccuracy: 0.4
     standingInnaccuracy: 1.2
     walkingInnaccuracy: 1.8
     runningInnaccuracy: 3.5
+    adsMult: 0.8
+    crouchingMult: 0.7
+    airborneMult: 2
   tracerProbability: 1
   layermask:
     serializedVersion: 2
     m_Bits: 2561
   rbForce: 8
+  hitboxDamageMultipliers:
+    head: 2.5
+    chest: 0.8
+    abdomen: 1.5
+    arms: 0.7
+    legs: 0.5

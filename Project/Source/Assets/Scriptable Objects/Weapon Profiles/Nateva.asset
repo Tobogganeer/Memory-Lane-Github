@@ -13,12 +13,21 @@ MonoBehaviour:
   m_Name: Nateva
   m_EditorClassIdentifier: 
   type: 1
-  speedMultiplier: 0.95
+  speedMultiplier: 1.05
   jumpMultiplier: 1
+  adsSpeedMultiplier: 0.7
   bobSpeedMultiplier: 0.9
   bobAmountMultiplier: 1.1
   camShakePreset: {fileID: 11400000, guid: 25b405081c072024dbc8df80c02d56ab, type: 2}
   fireRateRPM: 450
+  adsOffset: {x: 0.114, y: 0.0155, z: 0.2}
+  recoilAmount: 37
+  aimingRecoilMultiplier: 0.7
+  crouchingRecoilMultiplier: 0.7
+  crouchOffsets:
+    pos: {x: -0.11, y: -0.1, z: -0.15}
+    rot: {x: 0, y: 0, z: 30}
+    rot_aim: {x: 0, y: 0, z: 10}
   ballisticsSettings:
     penetrationPower: 1
     maxPenetrations: 15
@@ -26,12 +35,20 @@ MonoBehaviour:
   maxRange: 250
   baseDamage: 55
   accuracyProfile:
-    crouchingInnaccuracy: 0.3
     standingInnaccuracy: 0.55
     walkingInnaccuracy: 1
     runningInnaccuracy: 2.5
+    adsMult: 0.8
+    crouchingMult: 0.7
+    airborneMult: 2
   tracerProbability: 1
   layermask:
     serializedVersion: 2
     m_Bits: 2561
   rbForce: 14
+  hitboxDamageMultipliers:
+    head: 3.5
+    chest: 1
+    abdomen: 1.25
+    arms: 0.65
+    legs: 0.45

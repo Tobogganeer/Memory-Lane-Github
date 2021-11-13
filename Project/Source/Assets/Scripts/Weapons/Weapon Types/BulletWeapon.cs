@@ -33,6 +33,8 @@ public class BulletWeapon : WeaponBase
     public ReloadAudio[] reloadAudio;
     public ReloadAudio[] reloadEmptyAudio;
 
+    private const float MAX_ACTION_ADS_INFLUENCE = 0.7f;
+
     //public float GetTimePerShot()
     //{
     //    if (secondsPerShot == 0)
@@ -66,6 +68,9 @@ public class BulletWeapon : WeaponBase
             drawTimer -= Time.deltaTime;
             if (currentMagazineAmmo <= 0 && currentReserveAmmo > 0 && reloadTimer <= 0)
                 ReloadEmpty();
+
+            if (drawTimer <= 0)
+                OnDrawFinish();
         }
 
         if (reloadTimer > 0)
@@ -74,6 +79,7 @@ public class BulletWeapon : WeaponBase
             if (reloadTimer <= 0)
                 OnReloadFinish();
         }
+
     }
 
     public bool CanFire()
@@ -106,17 +112,23 @@ public class BulletWeapon : WeaponBase
         reloadTimer = 0;
 
         UpdateAmmoText();
+        animationPlayer.Draw();
+        WeaponSway.MaxADSInfluence = 0;
     }
 
     public override void OnHolster()
     {
         reloadTimer = 0;
+        WeaponSway.MaxADSInfluence = 0;
     }
 
     public override void OnTryInspect()
     {
         if (fireTimer <= 0 && reloadTimer <= 0)
+        {
             animationPlayer.Inspect();
+            WeaponSway.MaxADSInfluence = 0f;
+        }
     }
 
 
@@ -137,7 +149,7 @@ public class BulletWeapon : WeaponBase
         BallisticsResult result = Ballistics.Cast(shootFrom.position, fireDir, profile.MaxRange, profile.LayerMask, profile.BallisticsSettings);
         if (!result.empty)
         {
-            DamageResult damageResult = Ballistics.ApplyDamage(result, profile.BaseDamage, profile.RBForce);
+            DamageResult damageResult = Ballistics.ApplyDamage(result, profile.BaseDamage, profile.RBForce, type);
             Ballistics.DrawResult(result, 5);
 
             if (damageResult.appliedDamage)
@@ -150,15 +162,13 @@ public class BulletWeapon : WeaponBase
 
         PlayFireSound();
 
-        FPSCamera.Shake(profile.CamShakePreset);
-        FPSCamera.AddRecoil(5);
-
         if (Random.Range(0f, 1f) < profile.TracerProbability)
             FX.SpawnTracer(tracersFrom.position, fireDir, ref result);
 
-        animationPlayer.Fire();
+        FireFX(profile, animationPlayer);
 
         UpdateAmmoText();
+        WeaponSway.MaxADSInfluence = 1f;
 
         //Vector2 inaccuracyVector = OptimizedRandom.insideUnitCircle * CalculateInaccuracy(ownerPlayer);
         //Quaternion inaccuracyRotation = Quaternion.Euler(inaccuracyVector.x, inaccuracyVector.y, 0);
@@ -205,6 +215,7 @@ public class BulletWeapon : WeaponBase
         animationPlayer.Reload();
 
         PlayAudio(reloadAudio);
+        WeaponSway.MaxADSInfluence = MAX_ACTION_ADS_INFLUENCE;
         //try
         //{
         //    PlayReloadAudio(player);
@@ -222,6 +233,7 @@ public class BulletWeapon : WeaponBase
         animationPlayer.ReloadEmpty();
 
         PlayAudio(reloadEmptyAudio);
+        WeaponSway.MaxADSInfluence = MAX_ACTION_ADS_INFLUENCE;
         //try
         //{
         //    PlayReloadAudio(player);
@@ -254,25 +266,17 @@ public class BulletWeapon : WeaponBase
         }
 
         UpdateAmmoText();
+        WeaponSway.MaxADSInfluence = 1f;
+    }
+
+    private void OnDrawFinish()
+    {
+        WeaponSway.MaxADSInfluence = 1f;
     }
 
     private void UpdateAmmoText()
     {
         HUD.SetAmmoCounterText(currentMagazineAmmo, magazineSize, currentReserveAmmo);
-    }
-
-    private float GetInnaccuracy()
-    {
-        AccuracyProfile profile = Weapons.GetProfile(type).AccuracyProfile;
-
-        float normalizedSpeed = Player.Movement.FromStillToMaxSpeed01;
-
-        if (Player.Movement.Crouched)
-            return Mathf.Lerp(profile.crouchingInnaccuracy, profile.standingInnaccuracy, normalizedSpeed);
-        else if (Player.Movement.Sprinting)
-            return Mathf.Lerp(profile.standingInnaccuracy, profile.runningInnaccuracy, normalizedSpeed);
-        else
-            return Mathf.Lerp(profile.standingInnaccuracy, profile.walkingInnaccuracy, normalizedSpeed);
     }
 
     public void RefillAmmo()

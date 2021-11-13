@@ -61,7 +61,7 @@ public class Grenade : MonoBehaviour
                 if (colliderPool[i] != null)
                 {
                     if (colliderPool[i].TryGetComponent(out IExplosionDamagable damagable)) damagable.
-                            TakeExplosiveDamage(DamageDetails.NoDir(GetActualDamage(damage, transform.position.SqrDistance(colliderPool[i].transform.position))));
+                            TakeExplosiveDamage(DamageDetails.NoDir(GetActualDamage(damage, transform.position.SqrDistance(colliderPool[i].transform.position)), WeaponType.None));
 
                     //if (colliderPool[i].TryGetComponent(out Ragdoller ragdoller)) ragdoller.EnableRagdoll();
 
