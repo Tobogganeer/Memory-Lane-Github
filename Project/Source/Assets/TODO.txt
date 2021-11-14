@@ -1,25 +1,9 @@
-Fix weapon sway in builds
-^^^ kinda fixed, find out why it was happening in the first place
-
 Enemies alerted when shot
+Weird enemy rotation
 Surface audio
-Damage falloff with distance
 
+Damage falloff with distance (anim curve)
 Camera impulse on jump
-
-
-
-Anims
-{
--Draw
--Idle
--Inspect
--Idle aim
--Fire aim
--Fire
--Reload
--Reload empty
--(start, single, double, return for xrm)
--Holster
--(Maybe) Fire last
-}
+Bullet casings
+Rotate weapon towards movement
+SaveLoad base64

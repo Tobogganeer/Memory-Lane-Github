@@ -104,9 +104,9 @@ MonoBehaviour:
   animationPlayer: {fileID: 3924975224407811349}
   magazineSize: 2
   reserveAmmo: 8
-  reloadTime: 3.3
-  reloadEmptyTime: 5
-  drawTime: 1.3
+  reloadTime: 2
+  reloadEmptyTime: 3
+  drawTime: 0.5
   fireRateRPM: 110
   projectilePrefab: {fileID: 7879363721898960492, guid: b4a3dd1cc49f7b745956b6d5560155fd, type: 3}
   reloadAudio: []
@@ -273,9 +273,9 @@ MonoBehaviour:
   animationPlayer: {fileID: 3924975224407811349}
   magazineSize: 45
   reserveAmmo: 90
-  reloadTime: 6.5
-  reloadEmptyTime: 8
-  drawTime: 1.3
+  reloadTime: 2.9
+  reloadEmptyTime: 4.3
+  drawTime: 0.7
   tracersFrom: {fileID: 8820208844496295916}
   reloadAudio: []
   reloadEmptyAudio: []
@@ -922,11 +922,11 @@ MonoBehaviour:
   animationPlayer: {fileID: 3924975224407811349}
   magazineSize: 7
   reserveAmmo: 35
-  doubleShellReloadTime: 0.9
-  singleShellReloadTime: 1
-  reloadTransitionTime: 0.5
+  doubleShellReloadTime: 0.66
+  singleShellReloadTime: 0.8
+  reloadTransitionTime: 0.33
   reloadEmptyTransitionTime: 1
-  drawTime: 1
+  drawTime: 0.33
   numPellets: 7
   tracersFrom: {fileID: 3451539234048716498}
   singleShellAudio: []
@@ -1324,9 +1324,9 @@ MonoBehaviour:
   animationPlayer: {fileID: 5789227112484148406}
   magazineSize: 45
   reserveAmmo: 90
-  reloadTime: 6.5
-  reloadEmptyTime: 8
-  drawTime: 1.3
+  reloadTime: 2.9
+  reloadEmptyTime: 4.3
+  drawTime: 0.7
   tracersFrom: {fileID: 7902190524353240718}
   reloadAudio: []
   reloadEmptyAudio: []

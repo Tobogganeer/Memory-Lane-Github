@@ -76,9 +76,6 @@ public class RangedAI : MonoBehaviour, IDamagable
         if (!enabled || health.CurrentHP <= 0) return;
         // Dont think if this is dead
 
-        UpdateRotation();
-        // Rotate
-
         if (Time.frameCount % REPEAT_FRAME_COUNT == 0)
             EvaluateAI(); // Update every REPEAT_FRAME_COUNT'th frame
 
@@ -111,6 +108,13 @@ public class RangedAI : MonoBehaviour, IDamagable
         //
         //debugLineRenderer.SetPosition(0, attackFrom.position);
         //debugLineRenderer.SetPosition(1, attackFrom.position + predictionDelta * 100);
+    }
+
+    private void LateUpdate()
+    {
+        if (!enabled || health.CurrentHP <= 0) return;
+
+        UpdateRotation();
     }
 
     #region Decision Making

@@ -34,11 +34,53 @@ ModelImporter:
       74: 2771513950982972553
     second: VM Weapons|VM:FNAL_Reload_Empty
   - first:
+      74: 1278147424152778987
+    second: VM Weapons|VM:GR3-N_Draw
+  - first:
+      74: 8697528821938622529
+    second: VM Weapons|VM:GR3-N_Fire
+  - first:
+      74: 260089393183335260
+    second: VM Weapons|VM:GR3-N_Fire_Aim
+  - first:
+      74: 6531168803296648576
+    second: VM Weapons|VM:GR3-N_Holster
+  - first:
       74: 67340452471483808
     second: VM Weapons|VM:GR3-N_Idle
   - first:
+      74: 6693937186597152373
+    second: VM Weapons|VM:GR3-N_Inspect
+  - first:
+      74: -7794590929686820247
+    second: VM Weapons|VM:GR3-N_Reload
+  - first:
+      74: -1671006321402437085
+    second: VM Weapons|VM:GR3-N_Reload_Empty
+  - first:
+      74: -2106546762615603201
+    second: VM Weapons|VM:Molkor_Draw
+  - first:
+      74: -1620763310900928647
+    second: VM Weapons|VM:Molkor_Fire
+  - first:
+      74: 6039590354203851013
+    second: VM Weapons|VM:Molkor_Fire_Aim
+  - first:
+      74: -5158754416690086641
+    second: VM Weapons|VM:Molkor_Holster
+  - first:
       74: 4865088416515559542
     second: VM Weapons|VM:Molkor_Idle
+  - first:
+      74: 823326493084383536
+    second: VM Weapons|VM:Molkor_Inspect
+  - first:
+      74: 7857959449748159898
+    second: VM Weapons|VM:Molkor_Reload
+  - first:
+      74: 6484369660056984463
+    second: VM Weapons|VM:Molkor_Reload_Empty
   - first:
       74: -2016822705051298862
     second: VM Weapons|VM:Nateva_Draw
@@ -63,6 +105,12 @@ ModelImporter:
   - first:
       74: -8177599844770709656
     second: VM Weapons|VM:Nateva_Reload_Empty
+  - first:
+      74: 740140476743937023
+    second: VM Weapons|VM:old
+  - first:
+      74: 526079192496217713
+    second: VM Weapons|VM:old_2
   - first:
       74: 8524098814060780675
     second: VM Weapons|VM:P3K_Draw
@@ -91,8 +139,38 @@ ModelImporter:
       74: 7928719375521407888
     second: VM Weapons|VM:TPose
   - first:
+      74: 1944012576906597481
+    second: VM Weapons|VM:XRM_Draw
+  - first:
+      74: -7256184049729942398
+    second: VM Weapons|VM:XRM_Fire
+  - first:
+      74: -5979766391208662966
+    second: VM Weapons|VM:XRM_Fire_Aim
+  - first:
+      74: 5580089911163880061
+    second: VM Weapons|VM:XRM_Holster
+  - first:
       74: 7457005795251161094
     second: VM Weapons|VM:XRM_Idle
+  - first:
+      74: 175145210946371734
+    second: VM Weapons|VM:XRM_Inspect
+  - first:
+      74: -3548821384134388531
+    second: VM Weapons|VM:XRM_Reload_Double
+  - first:
+      74: -8206381286654629159
+    second: VM Weapons|VM:XRM_Reload_Finish
+  - first:
+      74: 6759732091274714975
+    second: VM Weapons|VM:XRM_Reload_Finish_Empty
+  - first:
+      74: 519129138018779480
+    second: VM Weapons|VM:XRM_Reload_Single
+  - first:
+      74: -8182401852724640374
+    second: VM Weapons|VM:XRM_Reload_Start
   externalObjects:
   - first:
       type: UnityEngine:Material
