@@ -1,4 +1,6 @@
 # Memory-Lane-Github
  
-Started Sept 24.
-Don't know how far a 25+ person project will go, so I've taken the aspects I like and am seeing how far I can get as a solo dev.
+Just a small project to test some things.
+
+Feel free to use any of my assets for anything you'd like.
+NOT the third party assets in the project! Check their respective sources first.
